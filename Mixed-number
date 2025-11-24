@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ماشین‌حساب اعداد مخلوط (جمع/تفریق/ضرب/تقسیم)</title>
+  <style>
+    /* ===== بخش CSS ===== */
+    :root{font-family: Vazirmatn, Tahoma, sans-serif;}
+    body{direction:rtl;background:#f6fbff;color:#05334a;margin:0;padding:20px}
+    .card{max-width:920px;margin:10px auto;background:white;border-radius:12px;box-shadow:0 6px 20px rgba(5,51,74,0.08);padding:18px}
+    h1{margin:0 0 12px;font-size:20px}
+    p.small{margin:6px 0 14px;color:#345}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .box{flex:1;min-width:220px;background:#fbfeff;border:1px solid #e6f0f6;padding:12px;border-radius:10px}
+    label{display:block;font-size:13px;margin-bottom:6px}
+    .inputs{display:flex;gap:8px;align-items:center}
+    input[type="number"]{width:76px;padding:8px;border-radius:8px;border:1px solid #cfe6f2;font-size:14px}
+    select{padding:8px;border-radius:8px;border:1px solid #cfe6f2}
+    button{padding:10px 14px;border-radius:10px;border:none;background:#0b7fab;color:#fff;font-weight:600;cursor:pointer}
+    button.secondary{background:#e6f3f8;color:#044656}
+    .steps{background:#f8ffff;border-left:4px solid #0b7fab;padding:12px;border-radius:8px;margin-top:12px;white-space:pre-wrap}
+    .result{font-size:18px;font-weight:700;margin-top:8px}
+    .hint{font-size:13px;color:#236b81;margin-top:8px}
+    .small-btn{padding:6px 8px;font-size:13px}
+    footer{margin-top:14px;font-size:12px;color:#466}
+    .error{color:#b00020;font-weight:600}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>ماشین‌حساب اعداد مخلوط — گام‌به‌گام</h1>
+    <p class="small">دو عدد مخلوط وارد کنید، سپس نوع عمل را انتخاب کنید. برنامه اول هر عدد مخلوط را به کسر نامناسب تبدیل می‌کند و سپس عمل را با نمایش مراحل انجام می‌دهد.</p>
+
+    <div class="row">
+      <div class="box">
+        <label>عدد مخلوط اول</label>
+        <div class="inputs">
+          <input id="w1" type="number" min="0" step="1" placeholder="کامل" aria-label="جزء صحیح 1">
+          <input id="n1" type="number" min="0" step="1" placeholder="صورت" aria-label="صورت 1">
+          <input id="d1" type="number" min="1" step="1" placeholder="مخرج" aria-label="مخرج 1">
+        </div>
+        <div class="hint">مثال: برای ۲ و ۳/۴، بنویس: کامل=2، صورت=3، مخرج=4</div>
+      </div>
+
+      <div class="box">
+        <label>عدد مخلوط دوم</label>
+        <div class="inputs">
+          <input id="w2" type="number" min="0" step="1" placeholder="کامل">
+          <input id="n2" type="number" min="0" step="1" placeholder="صورت">
+          <input id="d2" type="number" min="1" step="1" placeholder="مخرج">
+        </div>
+      </div>
+
+      <div class="box">
+        <label>عمل مورد نظر</label>
+        <select id="op">
+          <option value="add">+</option>
+          <option value="sub">-</option>
+          <option value="mul">×</option>
+          <option value="div">÷</option>
+        </select>
+
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button id="stepBtn" class="small-btn">نمایش مرحله‌ها</button>
+          <button id="calcBtn" class="small-btn">محاسبه نهایی</button>
+          <button id="clearBtn" class="small-btn secondary">پاک کردن</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="output" class="steps" aria-live="polite">نتیجه و مراحل اینجا نمایش داده می‌شود.</div>
+    <div id="final" class="result"></div>
+    <div id="err" class="error"></div>
+    <footer>توجه: مخرج نباید صفر باشد. برای تقسیم، عدد دوم نباید صفر (صورت=0 و مخرج≠0) شود.</footer>
+  </div>
+
+  <script>
+    // ===== بخش JavaScript =====
+    // توابع کمکی
+    function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){let t=a%b;a=b;b=t;}return a}
+    function simplify(fr){ // fr = {num, den}
+      if(fr.den<0){fr.num=-fr.num;fr.den=-fr.den}
+      const g=gcd(fr.num,fr.den);fr.num/=g;fr.den/=g;return fr
+    }
+    function mixedToImproper(w,n,d){ // ورودی‌ها عدد صحیح هستند
+      // فرض: w>=0, n>=0, d>0
+      const num = (Math.abs(w)*d) + n;
+      return {num: w<0 ? -num : num, den: d};
+    }
+    function improperToMixed(num,den){
+      const sign = (num<0) ? -1 : 1;
+      num = Math.abs(num);
+      const w = Math.floor(num/den);
+      const rem = num % den;
+      return {whole: w*sign, num: rem, den: den};
+    }
+
+    function readInputs(){
+      const w1 = Number(document.getElementById('w1').value) || 0;
+      const n1 = Number(document.getElementById('n1').value) || 0;
+      const d1 = Number(document.getElementById('d1').value) || 0;
+      const w2 = Number(document.getElementById('w2').value) || 0;
+      const n2 = Number(document.getElementById('n2').value) || 0;
+      const d2 = Number(document.getElementById('d2').value) || 0;
+      return {w1,n1,d1,w2,n2,d2};
+    }
+
+    function toTextFrac(fr){return fr.num + '/' + fr.den}
+    function toTextMixed(mix){ if(mix.num===0) return String(mix.whole); if(Math.abs(mix.whole)===0) return mix.num + '/' + mix.den; return mix.whole + ' و ' + mix.num + '/' + mix.den }
+
+    // محاسبه مرحله‌ای و نمایش
+    document.getElementById('stepBtn').addEventListener('click',()=>{
+      document.getElementById('err').textContent='';
+      const out = document.getElementById('output');
+      out.textContent='';
+      const {w1,n1,d1,w2,n2,d2} = readInputs();
+      if(d1===0 || d2===0){document.getElementById('err').textContent='خطا: مخرج نباید صفر باشد.'; return}
+
+      // تبدیل مخلوط‌ها به کسور نامناسب
+      const imp1 = mixedToImproper(w1,n1,d1);
+      const imp2 = mixedToImproper(w2,n2,d2);
+      let text = '';
+      text += 'گام 1 — تبدیل اعداد مخلوط به کسر نامناسب:\n';
+      text += 'عدد اول: ' + toTextMixed({whole:w1,num:n1,den:d1}) + ' → ' + imp1.num + '/' + imp1.den + '\n';
+      text += 'عدد دوم: ' + toTextMixed({whole:w2,num:n2,den:d2}) + ' → ' + imp2.num + '/' + imp2.den + '\n\n';
+
+      const op = document.getElementById('op').value;
+      if(op==='add' || op==='sub'){
+        text += 'گام 2 — آوردن به مخرج مشترک:\n';
+        const denLCM = (imp1.den * imp2.den) / gcd(imp1.den, imp2.den);
+        const mul1 = denLCM / imp1.den; const mul2 = denLCM / imp2.den;
+        const a = imp1.num * mul1; const b = imp2.num * mul2;
+        text += imp1.num + '/' + imp1.den + ' = ' + a + '/' + denLCM + '\n';
+        text += imp2.num + '/' + imp2.den + ' = ' + b + '/' + denLCM + '\n\n';
+        text += 'گام 3 — انجام عمل جمع/تفریق روی صورت‌ها:\n';
+        const resNum = (op==='add') ? (a + b) : (a - b);
+        text += 'صورت نهایی = ' + (op==='add' ? (a + ' + ' + b) : (a + ' - ' + b)) + ' = ' + resNum + '\n';
+        text += 'مخرج = ' + denLCM + '\n\n';
+        let result = simplify({num:resNum,den:denLCM});
+        text += 'گام 4 — ساده‌سازی: ' + resNum + '/' + denLCM + ' → ' + result.num + '/' + result.den + '\n';
+        const mixed = improperToMixed(result.num,result.den);
+        text += 'گام 5 — تبدیل به عدد مخلوط (در صورت لزوم): ' + toTextMixed(mixed) + '\n';
+
+        out.textContent = text;
+        document.getElementById('final').textContent = 'نتیجه: ' + toTextMixed(mixed) + '   (کسر: ' + result.num + '/' + result.den + ')';
+      }
+      else if(op==='mul'){
+        text += 'گام 2 — ضرب دو کسر نامناسب:\n';
+        text += imp1.num + '/' + imp1.den + ' × ' + imp2.num + '/' + imp2.den + '\n';
+        let resNum = imp1.num * imp2.num; let resDen = imp1.den * imp2.den;
+        text += 'صورت = ' + imp1.num + ' × ' + imp2.num + ' = ' + resNum + '\n';
+        text += 'مخرج = ' + imp1.den + ' × ' + imp2.den + ' = ' + resDen + '\n\n';
+        let result = simplify({num:resNum,den:resDen});
+        text += 'گام 3 — ساده‌سازی: ' + resNum + '/' + resDen + ' → ' + result.num + '/' + result.den + '\n';
+        const mixed = improperToMixed(result.num,result.den);
+        text += 'گام 4 — تبدیل به عدد مخلوط: ' + toTextMixed(mixed) + '\n';
+
+        out.textContent = text;
+        document.getElementById('final').textContent = 'نتیجه: ' + toTextMixed(mixed) + '   (کسر: ' + result.num + '/' + result.den + ')';
+      }
+      else if(op==='div'){
+        // تقسیم = ضرب در معکوس
+        if(imp2.num===0){document.getElementById('err').textContent='خطا: تقسیم بر صفر مجاز نیست.'; return}
+        text += 'گام 2 — تبدیل تقسیم به ضرب در معکوس:\n';
+        text += imp1.num + '/' + imp1.den + ' ÷ ' + imp2.num + '/' + imp2.den + ' = ' + imp1.num + '/' + imp1.den + ' × ' + imp2.den + '/' + imp2.num + '\n\n';
+        let resNum = imp1.num * imp2.den; let resDen = imp1.den * imp2.num;
+        text += 'صورت = ' + imp1.num + ' × ' + imp2.den + ' = ' + resNum + '\n';
+        text += 'مخرج = ' + imp1.den + ' × ' + imp2.num + ' = ' + resDen + '\n\n';
+        let result = simplify({num:resNum,den:resDen});
+        text += 'گام 3 — ساده‌سازی: ' + resNum + '/' + resDen + ' → ' + result.num + '/' + result.den + '\n';
+        const mixed = improperToMixed(result.num,result.den);
+        text += 'گام 4 — تبدیل به عدد مخلوط: ' + toTextMixed(mixed) + '\n';
+
+        out.textContent = text;
+        document.getElementById('final').textContent = 'نتیجه: ' + toTextMixed(mixed) + '   (کسر: ' + result.num + '/' + result.den + ')';
+      }
+    });
+
+    document.getElementById('calcBtn').addEventListener('click',()=>{
+      // برای محاسبه نهایی فقط از همان روال گام‌به‌گام استفاده می‌کنیم اما خلاصه‌تر نمایش می‌دهیم
+      document.getElementById('err').textContent='';
+      document.getElementById('output').textContent='نتیجه نهایی محاسبه می‌شود...';
+      // با کلیک روی نمایش مرحله‌ها، همان خروجی نمایش داده می‌شود؛ برای جلوگیری از تکرار، فقط فراخوانی کنیم
+      document.getElementById('stepBtn').click();
+    });
+
+    document.getElementById('clearBtn').addEventListener('click',()=>{
+      ['w1','n1','d1','w2','n2','d2'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('output').textContent='نتیجه و مراحل اینجا نمایش داده می‌شود.';
+      document.getElementById('final').textContent='';
+      document.getElementById('err').textContent='';
+    });
+
+  </script>
+</body>
+</html>
