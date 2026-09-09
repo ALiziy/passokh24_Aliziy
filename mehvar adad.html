@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>محور اعداد | بازی آموزشی ریاضی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#6EC6FF;
+    --sky-bottom:#8E7CFF;
+    --card:#FFFFFF;
+    --ink:#2B2D42;
+    --ink-soft:#5B5E77;
+    --sun:#FFD166;
+    --sun-dark:#E6A400;
+    --coral:#FF6B6B;
+    --coral-dark:#E14F4F;
+    --mint:#3FCFB4;
+    --mint-dark:#25A88E;
+    --grape:#8E7CFF;
+    --good:#3FCF6E;
+    --bad:#FF5C5C;
+    --radius-lg:28px;
+    --radius-md:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+    color:var(--ink);
+  }
+  body{
+    min-height:100vh;
+    background:linear-gradient(160deg, var(--sky-top) 0%, var(--sky-bottom) 65%, #B79CFF 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px 14px;
+    position:relative;
+    overflow-x:hidden;
+    transition:background-color .35s ease;
+  }
+  /* decorative floating shapes */
+  .deco{position:fixed;pointer-events:none;opacity:.55;user-select:none;z-index:0;filter:drop-shadow(0 6px 10px rgba(0,0,0,.08));}
+  .deco.d1{top:6%;right:6%;font-size:54px;animation:float1 7s ease-in-out infinite;}
+  .deco.d2{bottom:10%;left:5%;font-size:60px;animation:float2 8s ease-in-out infinite;}
+  .deco.d3{top:14%;left:9%;font-size:40px;animation:float1 6s ease-in-out infinite .8s;}
+  .deco.d4{bottom:6%;right:9%;font-size:46px;animation:float2 9s ease-in-out infinite .4s;}
+  @keyframes float1{0%,100%{transform:translateY(0px) rotate(0deg);}50%{transform:translateY(-16px) rotate(6deg);}}
+  @keyframes float2{0%,100%{transform:translateY(0px) rotate(0deg);}50%{transform:translateY(14px) rotate(-6deg);}}
+
+  .stage{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:720px;
+  }
+
+  .card{
+    background:var(--card);
+    border-radius:var(--radius-lg);
+    padding:26px 26px 20px;
+    box-shadow:0 24px 60px rgba(30,20,90,.28);
+    position:relative;
+  }
+
+  header.title-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  header.title-row h1{
+    font-size:clamp(24px,5vw,32px);
+    font-weight:900;
+    margin:0;
+    background:linear-gradient(90deg,var(--grape),var(--coral));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    letter-spacing:.5px;
+  }
+  header.title-row .emoji{font-size:30px;}
+
+  .status-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:12px 4px 18px;
+    font-weight:700;
+    color:var(--ink-soft);
+    font-size:15px;
+  }
+  .status-row .pill{
+    background:#F2F1FF;
+    border:2px solid #E3E0FF;
+    border-radius:999px;
+    padding:6px 14px;
+  }
+  .progress-track{
+    height:10px;
+    border-radius:999px;
+    background:#EFEDFF;
+    overflow:hidden;
+    margin:0 4px 20px;
+  }
+  .progress-fill{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--mint),var(--grape));
+    width:0%;
+    transition:width .4s ease;
+  }
+
+  .prompt{
+    text-align:center;
+    font-size:clamp(17px,3.4vw,21px);
+    font-weight:700;
+    margin:6px 0 20px;
+    color:var(--ink);
+  }
+  .prompt .target-num{
+    display:inline-block;
+    background:var(--sun);
+    border:3px solid var(--sun-dark);
+    border-radius:14px;
+    padding:2px 14px;
+    margin:0 4px;
+    color:#5A3E00;
+    font-weight:900;
+  }
+
+  /* control box above the line: - [ current number ] + */
+  .control-box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin-bottom:8px;
+  }
+  .pm-btn{
+    width:56px;height:56px;
+    border-radius:18px;
+    border:none;
+    font-size:30px;
+    font-weight:900;
+    color:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 0 rgba(0,0,0,.15);
+    transition:transform .08s ease, box-shadow .08s ease;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .pm-btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.15);}
+  .pm-minus{background:linear-gradient(180deg,#FF8B8B,var(--coral-dark));}
+  .pm-plus{background:linear-gradient(180deg,#5EE0C7,var(--mint-dark));}
+
+  .value-box{
+    min-width:150px;
+    text-align:center;
+    background:#FFFFFF;
+    border:4px solid var(--grape);
+    border-radius:16px;
+    padding:10px 18px;
+    font-size:clamp(26px,6vw,34px);
+    font-weight:900;
+    color:var(--grape);
+    box-shadow:0 6px 0 #DAD3FF;
+    letter-spacing:1px;
+    direction:ltr;
+  }
+
+  /* number line */
+  .line-wrap{
+    position:relative;
+    margin:18px 10px 6px;
+    padding-top:46px;
+  }
+  .arrow{
+    position:absolute;
+    top:0;
+    width:0;height:0;
+    transform:translateX(50%);
+    cursor:grab;
+    touch-action:none;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    z-index:3;
+  }
+  .arrow:active{cursor:grabbing;}
+  .arrow .tip{
+    width:0;height:0;
+    border-left:14px solid transparent;
+    border-right:14px solid transparent;
+    border-top:20px solid var(--coral);
+    filter:drop-shadow(0 3px 3px rgba(0,0,0,.2));
+  }
+  .arrow .stick{
+    width:6px;height:14px;
+    background:var(--coral-dark);
+    border-radius:2px;
+    margin-top:-2px;
+  }
+
+  .track{
+    position:relative;
+    height:8px;
+    background:var(--sun);
+    border-radius:999px;
+    margin:0 4px;
+  }
+  .tick{
+    position:absolute;
+    top:50%;
+    transform:translate(-50%,-50%);
+    cursor:pointer;
+  }
+  .tick .mark{
+    display:block;
+    margin:0 auto;
+    background:var(--ink);
+    border-radius:2px;
+  }
+  .tick.minor .mark{width:3px;height:12px;background:#C9A400;}
+  .tick.major .mark{width:5px;height:26px;background:var(--ink);}
+  .tick .label{
+    position:absolute;
+    top:20px;
+    right:50%;
+    transform:translateX(50%);
+    font-weight:800;
+    font-size:15px;
+    color:var(--ink);
+    white-space:nowrap;
+    direction:ltr;
+  }
+
+  .hint{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:34px 4px 0;
+  }
+
+  .buttons-row{
+    display:flex;
+    gap:14px;
+    margin-top:26px;
+    flex-wrap:wrap;
+  }
+  .action-btn{
+    flex:1 1 0;
+    min-width:150px;
+    border:none;
+    border-radius:16px;
+    padding:16px 10px;
+    font-family:inherit;
+    font-size:17px;
+    font-weight:800;
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 6px 0 rgba(0,0,0,.15);
+    transition:transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+  }
+  .action-btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.15);}
+  .action-btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn-check{background:linear-gradient(180deg,#FFA36C,var(--coral-dark));}
+  .btn-next{background:linear-gradient(180deg,#5EE0C7,var(--mint-dark));}
+
+  .feedback-msg{
+    text-align:center;
+    min-height:26px;
+    margin-top:14px;
+    font-weight:800;
+    font-size:16px;
+  }
+  .feedback-msg.good{color:var(--mint-dark);}
+  .feedback-msg.bad{color:var(--coral-dark);}
+
+  footer.credit{
+    text-align:center;
+    margin-top:18px;
+    font-size:13px;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  footer.credit b{color:var(--grape);font-weight:800;}
+
+  /* full screen flash overlay */
+  .flash-overlay{
+    position:fixed;inset:0;
+    pointer-events:none;
+    opacity:0;
+    z-index:50;
+    transition:opacity .18s ease;
+  }
+  .flash-overlay.show{opacity:1;}
+  .flash-overlay.good{background:radial-gradient(circle at 50% 40%, rgba(63,207,110,.55), rgba(63,207,110,.85));}
+  .flash-overlay.bad{background:radial-gradient(circle at 50% 40%, rgba(255,92,92,.55), rgba(255,92,92,.85));}
+
+  .flash-text{
+    position:fixed;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(.8);
+    z-index:51;
+    background:#fff;
+    padding:22px 36px;
+    border-radius:24px;
+    font-size:clamp(22px,5vw,30px);
+    font-weight:900;
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .flash-text.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .flash-text.good{color:var(--mint-dark);}
+  .flash-text.bad{color:var(--coral-dark);}
+
+  .finish-card{
+    text-align:center;
+    padding:20px 6px 6px;
+  }
+  .finish-card .big-emoji{font-size:64px;}
+  .finish-card h2{font-size:26px;font-weight:900;color:var(--grape);margin:8px 0;}
+  .finish-card p{color:var(--ink-soft);font-weight:700;}
+  .restart-btn{
+    margin-top:16px;
+    border:none;border-radius:16px;
+    padding:14px 26px;
+    background:linear-gradient(180deg,#FFA36C,var(--coral-dark));
+    color:#fff;font-weight:800;font-size:16px;cursor:pointer;
+    box-shadow:0 6px 0 rgba(0,0,0,.15);
+  }
+  .restart-btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.15);}
+
+  @media (max-width:420px){
+    .card{padding:20px 16px 16px;}
+    .pm-btn{width:48px;height:48px;font-size:24px;}
+    .value-box{min-width:120px;padding:8px 12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="deco d1">⭐</div>
+<div class="deco d2">🎈</div>
+<div class="deco d3">✨</div>
+<div class="deco d4">🎈</div>
+
+<div class="flash-overlay" id="flashOverlay"></div>
+<div class="flash-text" id="flashText"></div>
+
+<div class="stage">
+  <div class="card" id="card">
+
+    <header class="title-row">
+      <span class="emoji">🔢</span>
+      <h1>محور اعداد</h1>
+      <span class="emoji">🔢</span>
+    </header>
+
+    <div class="status-row">
+      <span class="pill" id="questionCounter">سوال ۱ از ۶۰</span>
+      <span class="pill" id="scorePill">امتیاز: ۰</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div id="gameArea">
+      <p class="prompt">عدد <span class="target-num" id="targetNumDisplay">۰</span> را روی محور پیدا کن</p>
+
+      <div class="control-box">
+        <button class="pm-btn pm-minus" id="btnMinus" aria-label="عقب">−</button>
+        <div class="value-box" id="valueBox">۰</div>
+        <button class="pm-btn pm-plus" id="btnPlus" aria-label="جلو">+</button>
+      </div>
+
+      <div class="line-wrap" id="lineWrap">
+        <div class="arrow" id="arrow">
+          <div class="tip"></div>
+          <div class="stick"></div>
+        </div>
+        <div class="track" id="track"></div>
+      </div>
+
+      <p class="hint">فلش را بکش یا از دکمه‌های + و − استفاده کن، سپس «بررسی جواب» را بزن</p>
+
+      <div class="buttons-row">
+        <button class="action-btn btn-check" id="btnCheck">بررسی جواب ✅</button>
+        <button class="action-btn btn-next" id="btnNext">سؤال بعدی ⏭️</button>
+      </div>
+
+      <p class="feedback-msg" id="feedbackMsg"></p>
+    </div>
+
+    <div id="finishArea" class="finish-card" style="display:none;">
+      <div class="big-emoji">🏆</div>
+      <h2>آفرین! همه‌ی سؤال‌ها را حل کردی</h2>
+      <p id="finalScoreText">امتیاز تو: ۰ از ۶۰</p>
+      <button class="restart-btn" id="btnRestart">شروع دوباره 🔄</button>
+    </div>
+
+    <footer class="credit">طراح: <b>علیرضا ایزی</b></footer>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // ---------- helpers ----------
+  function toFa(num){
+    return Math.round(num).toLocaleString('fa-IR');
+  }
+  function randInt(min,max){ // inclusive
+    return Math.floor(Math.random()*(max-min+1))+min;
+  }
+  function clamp(v,min,max){ return Math.max(min,Math.min(max,v)); }
+
+  // ---------- question generation ----------
+  // digit tiers 2..9, question counts summing to 60, easy -> hard
+  const TIER_DIGITS  = [2,3,4,5,6,7,8,9];
+  const TIER_COUNTS  = [8,8,7,7,7,7,8,8]; // sum = 60
+
+  function buildQuestions(){
+    const list = [];
+    TIER_DIGITS.forEach((d, idx) => {
+      const count = TIER_COUNTS[idx];
+      for(let i=0;i<count;i++){
+        list.push(makeQuestion(d));
+      }
+    });
+    return list;
+  }
+
+  function makeQuestion(digits){
+    const majorSpacing = Math.pow(10, digits-1);      // spacing between big numbers on the line
+    const minorUnit     = digits === 2 ? 1 : majorSpacing/10; // finest step the arrow can move
+    const lo = Math.pow(10, digits-1);
+    const hi = Math.pow(10, digits) - 1;
+
+    let raw = randInt(lo, hi);
+    let target = Math.round(raw/minorUnit)*minorUnit;
+    target = clamp(target, lo, hi);
+
+    const majorBase = Math.floor(target/majorSpacing)*majorSpacing;
+    const lineStart = Math.max(0, majorBase - majorSpacing);
+    const lineEnd    = majorBase + 2*majorSpacing;
+
+    return { digits, majorSpacing, minorUnit, lineStart, lineEnd, target };
+  }
+
+  const questions = buildQuestions();
+  let qIndex = 0;
+  let score = 0;
+  let currentValue = 0;
+  let answeredCorrectly = false;
+
+  // ---------- DOM refs ----------
+  const questionCounter = document.getElementById('questionCounter');
+  const scorePill = document.getElementById('scorePill');
+  const progressFill = document.getElementById('progressFill');
+  const targetNumDisplay = document.getElementById('targetNumDisplay');
+  const valueBox = document.getElementById('valueBox');
+  const track = document.getElementById('track');
+  const arrow = document.getElementById('arrow');
+  const lineWrap = document.getElementById('lineWrap');
+  const btnMinus = document.getElementById('btnMinus');
+  const btnPlus = document.getElementById('btnPlus');
+  const btnCheck = document.getElementById('btnCheck');
+  const btnNext = document.getElementById('btnNext');
+  const feedbackMsg = document.getElementById('feedbackMsg');
+  const flashOverlay = document.getElementById('flashOverlay');
+  const flashText = document.getElementById('flashText');
+  const gameArea = document.getElementById('gameArea');
+  const finishArea = document.getElementById('finishArea');
+  const finalScoreText = document.getElementById('finalScoreText');
+  const btnRestart = document.getElementById('btnRestart');
+
+  // ---------- rendering ----------
+  function currentQ(){ return questions[qIndex]; }
+
+  function renderQuestion(){
+    const q = currentQ();
+    targetNumDisplay.textContent = toFa(q.target);
+    questionCounter.textContent = 'سؤال ' + toFa(qIndex+1) + ' از ' + toFa(questions.length);
+    scorePill.textContent = 'امتیاز: ' + toFa(score);
+    progressFill.style.width = ((qIndex)/questions.length*100) + '%';
+    feedbackMsg.textContent = '';
+    feedbackMsg.className = 'feedback-msg';
+    answeredCorrectly = false;
+
+    currentValue = q.lineStart;
+    buildTrack(q);
+    updateArrowVisual();
+  }
+
+  function buildTrack(q){
+    track.innerHTML = '';
+    const totalMinorSteps = Math.round((q.lineEnd - q.lineStart)/q.minorUnit);
+    for(let i=0;i<=totalMinorSteps;i++){
+      const val = q.lineStart + i*q.minorUnit;
+      const isMajor = (val % q.majorSpacing === 0);
+      const tick = document.createElement('div');
+      tick.className = 'tick ' + (isMajor ? 'major':'minor');
+      const pct = ((val - q.lineStart)/(q.lineEnd - q.lineStart))*100;
+      tick.style.left = pct + '%';
+
+      const mark = document.createElement('span');
+      mark.className = 'mark';
+      tick.appendChild(mark);
+
+      if(isMajor){
+        const label = document.createElement('span');
+        label.className = 'label';
+        label.textContent = toFa(val);
+        tick.appendChild(label);
+      }
+      tick.addEventListener('click', () => { setValue(val); });
+      track.appendChild(tick);
+    }
+  }
+
+  function updateArrowVisual(){
+    const q = currentQ();
+    const pct = ((currentValue - q.lineStart)/(q.lineEnd - q.lineStart))*100;
+    arrow.style.left = pct + '%';
+    valueBox.textContent = toFa(currentValue);
+  }
+
+  function setValue(v){
+    const q = currentQ();
+    currentValue = clamp(v, q.lineStart, q.lineEnd);
+    updateArrowVisual();
+  }
+
+  // ---------- drag interaction ----------
+  let dragging = false;
+
+  function valueFromClientX(clientX){
+    const q = currentQ();
+    const rect = track.getBoundingClientRect();
+    let pct = (clientX - rect.left)/rect.width;
+    pct = clamp(pct, 0, 1);
+    const raw = q.lineStart + pct*(q.lineEnd - q.lineStart);
+    const snapped = Math.round((raw - q.lineStart)/q.minorUnit)*q.minorUnit + q.lineStart;
+    return clamp(snapped, q.lineStart, q.lineEnd);
+  }
+
+  arrow.addEventListener('pointerdown', (e)=>{
+    dragging = true;
+    arrow.setPointerCapture(e.pointerId);
+  });
+  arrow.addEventListener('pointermove', (e)=>{
+    if(!dragging) return;
+    setValue(valueFromClientX(e.clientX));
+  });
+  arrow.addEventListener('pointerup', ()=>{ dragging = false; });
+  arrow.addEventListener('pointercancel', ()=>{ dragging = false; });
+
+  track.addEventListener('click', (e)=>{
+    setValue(valueFromClientX(e.clientX));
+  });
+
+  // ---------- +/- buttons: jump between major ticks ----------
+  btnPlus.addEventListener('click', ()=>{
+    const q = currentQ();
+    setValue(currentValue + q.majorSpacing);
+  });
+  btnMinus.addEventListener('click', ()=>{
+    const q = currentQ();
+    setValue(currentValue - q.majorSpacing);
+  });
+
+  // ---------- check answer ----------
+  function flash(kind, message){
+    flashOverlay.className = 'flash-overlay show ' + kind;
+    flashText.className = 'flash-text show ' + kind;
+    flashText.textContent = message;
+    setTimeout(()=>{
+      flashOverlay.classList.remove('show');
+      flashText.classList.remove('show');
+    }, 900);
+  }
+
+  btnCheck.addEventListener('click', ()=>{
+    const q = currentQ();
+    if(currentValue === q.target){
+      answeredCorrectly = true;
+      score += 1;
+      scorePill.textContent = 'امتیاز: ' + toFa(score);
+      feedbackMsg.textContent = 'آفرین! درست پیدا کردی 🎉';
+      feedbackMsg.className = 'feedback-msg good';
+      flash('good', 'آفرین! 🎉');
+      if(window.confetti){
+        confetti({particleCount:90, spread:75, origin:{y:0.6}});
+      }
+    } else {
+      feedbackMsg.textContent = 'دوباره امتحان کن';
+      feedbackMsg.className = 'feedback-msg bad';
+      flash('bad', 'دوباره امتحان کن 🤔');
+    }
+  });
+
+  // ---------- next question ----------
+  btnNext.addEventListener('click', ()=>{
+    qIndex += 1;
+    if(qIndex >= questions.length){
+      showFinish();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  function showFinish(){
+    gameArea.style.display = 'none';
+    finishArea.style.display = 'block';
+    progressFill.style.width = '100%';
+    finalScoreText.textContent = 'امتیاز تو: ' + toFa(score) + ' از ' + toFa(questions.length);
+    if(window.confetti){
+      confetti({particleCount:160, spread:100, origin:{y:0.5}});
+    }
+  }
+
+  btnRestart.addEventListener('click', ()=>{
+    qIndex = 0; score = 0;
+    gameArea.style.display = 'block';
+    finishArea.style.display = 'none';
+    renderQuestion();
+  });
+
+  // resize -> keep track/arrow aligned
+  window.addEventListener('resize', updateArrowVisual);
+
+  // ---------- init ----------
+  renderQuestion();
+})();
+</script>
+</body>
+  </html>
