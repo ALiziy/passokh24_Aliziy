@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>کارگاه ساعتی | جمع و تفریق اعداد مرکب</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#dff3ff;--ink:#12394a;--teal:#0f6e80;--sun:#ffc93c;--coral:#ff6b6b;--mint:#4fcf9b;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Vazirmatn,Tahoma,sans-serif;color:var(--ink);background:linear-gradient(#bfe6ff,var(--sky) 60%,#f4fbff);overflow-x:hidden}
+.cloud{position:fixed;font-size:3rem;opacity:.7;animation:drift 38s linear infinite;pointer-events:none}
+@keyframes drift{from{transform:translateX(110vw)}to{transform:translateX(-30vw)}}
+.gear{position:fixed;bottom:-20px;font-size:6rem;opacity:.18;animation:spin 14s linear infinite;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+main{max-width:720px;margin:0 auto;padding:16px;position:relative}
+h1{font-size:1.6rem;font-weight:900;margin:8px 0;text-align:center}
+.sub{text-align:center;margin:0 0 12px}
+.hero{display:flex;align-items:center;gap:12px;justify-content:center}
+.bubble{background:var(--white);border:3px solid var(--ink);border-radius:18px;padding:10px 14px;max-width:440px;font-weight:700;line-height:2;position:relative}
+.bubble:before{content:"";position:absolute;right:-14px;top:22px;border:8px solid transparent;border-left-color:var(--ink)}
+.mas{width:92px;flex:none;animation:float 3s ease-in-out infinite}
+.mas.happy{animation:hop .6s 2}
+.mas.sad{animation:wob .5s}
+@keyframes float{50%{transform:translateY(-8px)}}
+@keyframes hop{50%{transform:translateY(-26px) rotate(-6deg)}}
+@keyframes wob{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+#hand{transform-origin:50px 52px;animation:spin 6s linear infinite}
+.beam{transform-origin:50px 29px;animation:rock 4s ease-in-out infinite}
+.pan{animation:unrock 4s ease-in-out infinite}
+@keyframes rock{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes unrock{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-8deg)}}
+.menu{display:grid;gap:12px;margin-top:18px}
+.topic{display:flex;align-items:center;gap:14px;background:var(--white);border:3px solid var(--ink);border-radius:20px;padding:14px 16px;font:inherit;color:inherit;cursor:pointer;box-shadow:0 6px 0 var(--ink);text-align:right;transition:transform .15s}
+.topic:hover{transform:translateY(-3px)}
+.topic:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.topic .ic{font-size:2.4rem}.topic b{font-size:1.2rem;display:block}.topic small{display:block}
+.topic .st{margin-right:auto;font-size:1.3rem;letter-spacing:2px}
+.card{background:var(--white);border:3px solid var(--ink);border-radius:22px;padding:16px;margin-top:14px;box-shadow:0 6px 0 var(--ink)}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:700;gap:8px;flex-wrap:wrap}
+.bar{height:12px;background:#e4eef3;border-radius:9px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;width:0;background:var(--mint);transition:width .5s}
+.story{background:#fff6d6;border-radius:14px;padding:8px 12px;margin:8px 0;font-weight:700;line-height:1.9}
+.grid{display:grid;grid-template-columns:repeat(var(--n),1fr) 44px;gap:8px;align-items:center;margin:10px 0}
+.grid .h{text-align:center;font-weight:900;background:var(--teal);color:#fff;border-radius:12px;padding:4px}
+.num,.grid input{text-align:center;font:900 1.6rem Vazirmatn,Tahoma,sans-serif;border-radius:12px;padding:6px 2px;min-width:0;width:100%}
+.num{background:#eaf6fa;min-height:50px;display:flex;align-items:center;justify-content:center;transition:background .3s}
+.mk{font-size:1.5rem;font-weight:900;color:var(--coral);position:relative;top:-.35em;margin:0 2px}
+.cell{position:relative}.imk{position:absolute;top:2px;left:8px;pointer-events:none}
+.op{font-size:2.2rem;font-weight:900;text-align:center;color:var(--coral)}
+.line{grid-column:1/-1;height:4px;background:var(--ink);border-radius:4px}
+.grid input{border:3px dashed var(--teal);background:#fff;color:var(--ink)}
+.grid input:focus{outline:none;border-style:solid;border-color:var(--sun);box-shadow:0 0 0 4px #ffc93c55}
+.grid input.ok{border:3px solid var(--mint);background:#e6fbf2}
+.grid input.bad{border:3px solid var(--coral);background:#ffecec;animation:shake .4s}
+@keyframes shake{25%{transform:translateX(7px)}75%{transform:translateX(-7px)}}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+button.b{font:900 1.05rem Vazirmatn,Tahoma,sans-serif;border:3px solid var(--ink);border-radius:14px;padding:9px 18px;cursor:pointer;background:var(--sun);color:var(--ink);box-shadow:0 4px 0 var(--ink)}
+button.b:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+button.b.alt{background:#fff}button.b.go{background:var(--mint)}
+.nq{background:#7b3fe4;color:#fff;border-radius:8px;padding:0 8px;font-weight:900}
+.qz{background:#ff9f1c;color:var(--ink);border-radius:8px;padding:0 8px;font-weight:900}
+.cn{color:#e11d48;font-weight:900;font-size:1.25em}
+.machine{margin-top:12px;background:#f3ecff;border:3px solid #7b3fe4;border-radius:16px;padding:10px 12px}
+.mtitle{font-weight:900;color:#4b1fa8}
+.mc{min-height:34px;text-align:center;font-size:1.3rem;white-space:nowrap}
+.lab{text-align:center;font-weight:900;font-size:.85rem;border-radius:8px;padding:2px 0}
+.hl{background:#ffe27a!important;box-shadow:0 0 0 3px var(--sun)}
+.pop{animation:pop .5s}
+@keyframes pop{50%{transform:scale(1.25)}}
+.ar{display:inline-block;color:#7b3fe4;font-size:1.4rem;animation:slide 1s ease-out}
+@keyframes slide{from{transform:translateX(-40px);opacity:0}}
+.mcap{background:#fff;border-radius:12px;padding:8px 12px;line-height:2.2;min-height:60px;font-weight:700}
+.hide{display:none}
+.conf{position:fixed;top:-20px;width:10px;height:14px;animation:fall 1.6s ease-in forwards;z-index:9}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.big{font-size:3rem;text-align:center;letter-spacing:6px}
+.foot{margin:22px auto 8px;text-align:center;font-weight:900;background:var(--ink);color:#fff;border-radius:999px;padding:8px 18px;width:fit-content}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<span class="cloud" style="top:6%">☁️</span>
+<span class="cloud" style="top:22%;animation-delay:-18s;font-size:2rem">☁️</span>
+<span class="gear" style="right:-30px">⚙️</span><span class="gear" style="left:-30px;animation-direction:reverse">⚙️</span>
+
+<main>
+  <h1>🕰️ کارگاه ساعتی</h1>
+  <p class="sub">جمع و تفریق اعداد مرکب — پایه‌ی پنجم</p>
+
+  <div class="hero">
+    <svg id="clock" class="mas" viewBox="0 0 100 110" aria-hidden="true">
+      <rect x="44" y="2" width="12" height="12" rx="4" fill="#12394a"/>
+      <circle cx="50" cy="56" r="42" fill="#ffc93c" stroke="#12394a" stroke-width="5"/>
+      <circle cx="50" cy="56" r="32" fill="#fff" stroke="#12394a" stroke-width="3"/>
+      <circle cx="38" cy="46" r="5" fill="#12394a"/><circle cx="62" cy="46" r="5" fill="#12394a"/>
+      <path class="mouth" d="M36 66 Q50 78 64 66" stroke="#ff6b6b" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <line id="hand" x1="50" y1="52" x2="50" y2="30" stroke="#0f6e80" stroke-width="4" stroke-linecap="round"/>
+      <rect x="28" y="96" width="14" height="10" rx="4" fill="#12394a"/><rect x="58" y="96" width="14" height="10" rx="4" fill="#12394a"/>
+    </svg>
+    <svg id="scale" class="mas hide" viewBox="0 0 100 110" aria-hidden="true">
+      <path d="M26 106 H74 L66 94 H34Z" fill="#e0a800" stroke="#12394a" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="46" y="26" width="8" height="70" rx="3" fill="#ffc93c" stroke="#12394a" stroke-width="3"/>
+      <g class="beam">
+        <rect x="8" y="26" width="84" height="7" rx="3.5" fill="#ffc93c" stroke="#12394a" stroke-width="3"/>
+        <g class="pan" style="transform-origin:14px 33px">
+          <path d="M14 33 L2 62 M14 33 L26 62" stroke="#12394a" stroke-width="2.5" fill="none"/>
+          <path d="M0 62 H28 Q26 74 14 74 Q2 74 0 62Z" fill="#ffc93c" stroke="#12394a" stroke-width="3" stroke-linejoin="round"/>
+        </g>
+        <g class="pan" style="transform-origin:86px 33px">
+          <path d="M86 33 L74 62 M86 33 L98 62" stroke="#12394a" stroke-width="2.5" fill="none"/>
+          <path d="M72 62 H100 Q98 74 86 74 Q74 74 72 62Z" fill="#ffc93c" stroke="#12394a" stroke-width="3" stroke-linejoin="round"/>
+        </g>
+      </g>
+      <circle cx="50" cy="15" r="13" fill="#ffc93c" stroke="#12394a" stroke-width="3"/>
+      <circle cx="45" cy="12" r="2.4" fill="#12394a"/><circle cx="55" cy="12" r="2.4" fill="#12394a"/>
+      <path class="mouth" d="M43 18 Q50 24 57 18" stroke="#ff6b6b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="bubble" id="say">سلام! من ساعتی‌ام. هر مسئله را خودت حل کن؛ اگر اشتباه شد نگران نباش، با هم دوباره امتحان می‌کنیم!</div>
+  </div>
+
+  <section id="menu" class="menu"></section>
+
+  <section id="play" class="hide">
+    <div class="card">
+      <div class="top"><button class="b alt" id="back">↩ برگشت</button><span id="qn"></span><span id="stars"></span><button class="b alt" id="mus" aria-label="موسیقی">🔊</button></div>
+      <div class="bar"><i id="pb"></i></div>
+      <div class="story" id="story"></div>
+      <div class="grid" id="grid"></div>
+      <div class="btns">
+        <button class="b go" id="check">بررسی ✔</button>
+        <button class="b alt hide" id="help">⚙️ ماشین تبدیل (کمک)</button>
+        <button class="b hide" id="next">سؤال بعدی ◀</button>
+      </div>
+      <div class="machine hide" id="machine"></div>
+    </div>
+  </section>
+
+  <footer class="foot">طراح: علیرضا ایزی</footer>
+</main>
+
+<script>
+const FA='۰۱۲۳۴۵۶۷۸۹';
+const fa=n=>String(n).replace(/\d/g,d=>FA[d]);
+const norm=s=>s.replace(/[۰-۹]/g,d=>FA.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).trim();
+const $=id=>document.getElementById(id);
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const NQ='<span class="nq">نقلی</span>',QZ='<span class="qz">قرض</span>';
+const cn=x=>`<span class="cn">${fa(x)}</span>`;
+
+const TOPICS={
+  time:{name:'ماشین زمان',ic:'⏰',desc:'ساعت، دقیقه و ثانیه',units:['ساعت','دقیقه','ثانیه'],bases:[60,60],max:[0,59,59],big:[[1,4],[1,7],[2,9],[10,23]],step:5,marks:['','′','″'],
+    add:['مدت دو فیلم را کنار هم بگذار.','ساعتی دو بار دوید؛ کل زمان چقدر است؟','زمان دو مسیر را با هم جمع کن.'],
+    sub:['اختلاف دو زمان را پیدا کن.','از زمان کل، زمان گذشته را کم کن.','چقدر زمان باقی مانده است؟']},
+  cal:{name:'تقویم جادویی',ic:'📅',desc:'ماه و روز (هر ماه ۳۰ روز)',units:['ماه','روز'],bases:[30],max:[0,29],big:[[1,4],[2,8],[3,11],[12,24]],step:5,marks:['',''],
+    add:['دو سفر ساعتی را پشت سر هم بگذار.','مدت دو پروژه را جمع کن.','کل مدت دو دوره را حساب کن.'],
+    sub:['از مدت کل، مدت گذشته را کم کن.','اختلاف دو مدت را پیدا کن.','چقدر باقی مانده است؟']},
+  wt:{name:'ترازوی طلایی',ic:'⚖️',desc:'کیلوگرم و گرم',units:['کیلوگرم','گرم'],bases:[1000],max:[0,999],big:[[1,4],[1,7],[2,9],[10,25]],step:50,marks:['',''],
+    add:['وزن دو کیسه‌ی میوه را جمع کن.','وزن دو بسته‌ی آرد را حساب کن.','کل وزن دو جعبه را پیدا کن.'],
+    sub:['وزن کیسه‌ی خالی را کم کن.','اختلاف وزن دو بسته را پیدا کن.','چقدر باقی می‌ماند؟']}
+};
+const NQN=20,TIERS=['آسان 😊','متوسط 🙂','سخت 🔥','حرفه‌ای 🏆'];
+const opOf=i=>i%2?'-':'+';
+let stars={},topic,qi,att,first,q,locked,mas=$('clock');
+
+const total=(v,b)=>v.reduce((t,x,i)=>i?t*b[i-1]+x:x,0);
+// محاسبه‌ی مرحله‌به‌مرحله (از کوچک‌ترین واحد)
+function steps(A,B,op,b){const n=A.length,st=[];let c=0;
+  for(let i=n-1;i>=0;i--){const o={cin:c};
+    if(op=='+'){o.s=A[i]+B[i]+c;if(i>0){o.r=o.s%b[i-1];o.cout=Math.floor(o.s/b[i-1])}else{o.r=o.s;o.cout=0}}
+    else{o.a=A[i]-c;o.cout=(i>0&&o.a<B[i])?1:0;o.a2=o.a+(o.cout?b[i-1]:0);o.r=o.a2-B[i]}
+    st[i]=o;c=o.cout}
+  return st}
+
+function gen(op,d){const T=TOPICS[topic],n=T.units.length,b=T.bases,tier=Math.floor(d/5);
+  const sm=m=>{if(tier==0)return T.step*rnd(1,Math.floor(m/T.step));if(tier==3){let x;do{x=rnd(Math.max(3,Math.floor(m/3)),m)}while(x%5==0);return x}return rnd(3,m)};
+  const mk=()=>T.max.map((m,i)=>i==0?rnd(...T.big[tier]):sm(m));
+  for(let k=0;k<20000;k++){const A=mk(),B=mk();
+    if(op=='-'&&total(A,b)<=total(B,b))continue;
+    const st=steps(A,B,op,b);
+    const ok=n==3?(tier>=2?(st[2].cout>0&&st[1].cout>0):(st[2].cout>0&&st[1].cout==0)):st[1].cout>0;
+    if(ok)return{A,B,op,st,ans:st.map(o=>o.r)}}}
+
+function say(h,mood){$('say').innerHTML=h;mas.classList.remove('happy','sad');void mas.getBoundingClientRect();if(mood)mas.classList.add(mood);
+  document.querySelectorAll('.mouth').forEach(m=>m.setAttribute('d',mood=='sad'?(m.closest('#scale')?'M43 22 Q50 16 57 22':'M36 74 Q50 62 64 74'):(m.closest('#scale')?'M43 18 Q50 24 57 18':'M36 66 Q50 78 64 66')))}
+function setMascot(k){$('clock').classList.toggle('hide',k=='scale');$('scale').classList.toggle('hide',k!='scale');mas=$(k=='scale'?'scale':'clock')}
+
+function drawMenu(){const M=$('menu');M.innerHTML='';
+  for(const k in TOPICS){const T=TOPICS[k],s=stars[k]||0;
+    const d=document.createElement('button');d.className='topic';
+    d.innerHTML=`<span class="ic">${T.ic}</span><span><b>${T.name}</b><small>${T.desc}</small></span><span class="st">${s?'⭐'.repeat(s):'☆☆☆'}</span>`;
+    d.onclick=()=>start(k);M.appendChild(d)}}
+
+function start(k){topic=k;qi=0;first=0;setMascot(k=='wt'?'scale':'clock');$('menu').classList.add('hide');$('play').classList.remove('hide');musicPlay();newQ()}
+
+function newQ(){const T=TOPICS[topic],n=T.units.length,L=n-1,b=T.bases,u=T.units,op=opOf(qi),tier=Math.floor(qi/5);
+  q=gen(op,qi);att=0;locked=false;
+  $('qn').textContent=`سؤال ${fa(qi+1)} از ${fa(NQN)} (${TIERS[tier]})`;$('pb').style.width=(qi/NQN*100)+'%';$('stars').textContent='⭐'.repeat(first);
+  $('story').textContent=(op=='+'?'🟢 جمع: ':'🔴 تفریق: ')+T[op=='+'?'add':'sub'][qi%3];
+  const g=$('grid');g.style.setProperty('--n',n);
+  const nm=(x,i)=>`<div class="num">${fa(x)}<span class="mk">${T.marks[i]}</span></div>`;
+  let h=u.map(x=>`<div class="h">${x}</div>`).join('')+'<span></span>';
+  h+=q.A.map(nm).join('')+'<span></span>';
+  h+=q.B.map(nm).join('')+`<span class="op">${op=='+'?'+':'−'}</span>`;
+  h+='<div class="line"></div>'+u.map((x,i)=>`<div class="cell"><input inputmode="numeric" autocomplete="off" aria-label="${x}"><span class="mk imk">${T.marks[i]}</span></div>`).join('')+'<span></span>';
+  g.innerHTML=h;$('machine').classList.add('hide');$('help').classList.add('hide');$('next').classList.add('hide');$('check').classList.remove('hide');
+  [...g.querySelectorAll('input')].pop().focus();
+  say(op=='+'?`از «${u[L]}» شروع کن. اگر جمع از ${fa(b[L-1])} بیشتر شد، آن را تبدیل کن و ${NQ} را به قسمت بعدی ببر.`:`از «${u[L]}» شروع کن. اگر نشد کم کرد، از قسمت بعدی ${QZ} بگیر!`)}
+
+function confetti(){const c=['#ffc93c','#ff6b6b','#4fcf9b','#0f6e80','#fff'];
+  for(let i=0;i<40;i++){const e=document.createElement('i');e.className='conf';e.style.left=rnd(0,100)+'vw';e.style.background=c[i%5];e.style.animationDelay=Math.random()*.5+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}}
+
+function check(){if(locked)return;const T=TOPICS[topic],n=T.units.length,L=n-1,b=T.bases,u=T.units,st=q.st,op=q.op;
+  const ins=[...document.querySelectorAll('#grid input')],vals=ins.map(i=>norm(i.value));
+  if(vals.some(v=>v===''||isNaN(v))){say('همه‌ی خانه‌ها را با عدد پر کن. اگر چیزی نداری، صفر بنویس.');return}
+  const v=vals.map(Number);let all=true;
+  ins.forEach((el,i)=>{const ok=v[i]===q.ans[i];all=all&&ok;el.classList.remove('ok','bad');void el.offsetWidth;el.classList.add(ok?'ok':'bad')});
+  if(all){locked=true;if(att==0)first++;confetti();
+    say(att==0?'آفرین! بار اول درست حل کردی! 🎉':'عالی! با تلاش خودت پیدا کردی! 👏','happy');
+    $('check').classList.add('hide');$('help').classList.add('hide');$('machine').classList.add('hide');$('stars').textContent='⭐'.repeat(first);
+    $('next').classList.remove('hide');$('next').textContent=qi==NQN-1?'پایان 🏁':'سؤال بعدی ◀';return}
+  att++;let m;
+  const over=v.findIndex((x,i)=>i>0&&x>=b[i-1]);
+  let w=0;for(let i=L;i>=0;i--)if(v[i]!==q.ans[i]){w=i;break}
+  if(over>-1)m=`در قسمت «${u[over]}» عدد ${fa(b[over-1])} یا بیشتر نمی‌شود! هر ${fa(b[over-1])} ${u[over]} برابر ۱ ${u[over-1]} است. آن را تبدیل کن و به‌صورت ${NQ} به «${u[over-1]}» ببر.`;
+  else if(op=='+'){
+    m=w==L?`قسمت «${u[w]}» را دوباره جمع کن. اگر جواب از ${fa(b[w-1])} بیشتر شد، چند ${u[w-1]} در آن است؟ آن را ${NQ} بنویس.`
+      :`قسمت «${u[w+1]}» درست است 👍 حالا قسمت «${u[w]}» را حساب کن.`+(st[w].cin?` یادت نرود ${NQ} ${cn(st[w].cin)} را هم اضافه کنی!`:'')}
+  else{
+    if(st[w].cout>0)m=`در قسمت «${u[w]}» نمی‌شود ${fa(q.B[w])} را از ${fa(st[w].a)} کم کرد. یک ${u[w-1]} ${QZ} بگیر؛ هر ${u[w-1]} برابر ${fa(b[w-1])} ${u[w]} است.`;
+    else if(st[w].cin>0)m=`قسمت «${u[w+1]}» درست است 👍 اما در قسمت «${u[w]}» یادت نرود یکی ${QZ} دادی، پس یکی کم شده است.`;
+    else m=`قسمت «${u[w]}» را دوباره حساب کن.`}
+  say(m+' (خانه‌های قرمز را درست کن)','sad');
+  if(att>=2)$('help').classList.remove('hide')}
+
+// ماشین تبدیل: اعداد زیر هم، توضیح روی همان اعداد، فلش برای نقلی
+function machine(){const T=TOPICS[topic],n=T.units.length,b=T.bases,u=T.units,A=q.A,B=q.B,st=q.st,op=q.op;
+  const nm=(x,i)=>fa(x)+`<span class="mk">${T.marks[i]}</span>`;
+  const sg=op=='+'?'+':'−';
+  let h='<div class="mtitle">⚙️ ماشین تبدیل: قدم‌به‌قدم با هم حل می‌کنیم</div><div class="grid" style="--n:'+n+'">';
+  h+=u.map(x=>`<div class="h">${x}</div>`).join('')+'<span></span>';
+  h+=u.map((x,i)=>`<div class="mc" id="mc${i}"></div>`).join('')+`<span class="lab ${op=='+'?'nq':'qz'}">${op=='+'?'نقلی':'قرض'}</span>`;
+  h+=A.map((x,i)=>`<div class="num" id="ma${i}">${nm(x,i)}</div>`).join('')+'<span></span>';
+  h+=B.map((x,i)=>`<div class="num" id="mb${i}">${nm(x,i)}</div>`).join('')+`<span class="op">${sg}</span>`;
+  h+='<div class="line"></div>'+u.map((x,i)=>`<div class="num" id="mr${i}"> </div>`).join('')+'<span></span></div>';
+  h+='<div class="mcap" id="mcap">«قدم بعدی» را بزن. از کوچک‌ترین واحد شروع می‌کنیم.</div><div class="btns"><button class="b go" id="mnext">قدم بعدی ◀</button><button class="b alt" id="mre">از اول ↺</button></div>';
+  const M=$('machine');M.innerHTML=h;M.classList.remove('hide');M.scrollIntoView({behavior:'smooth',block:'nearest'});
+  let k=0;
+  const go=()=>{if(k>=n)return;const i=n-1-k,s=st[i],x=v=>nm(v,i);
+    document.querySelectorAll('#machine .hl').forEach(e=>e.classList.remove('hl'));
+    ['ma','mb','mr'].forEach(p=>$(p+i).classList.add('hl'));
+    $('mr'+i).innerHTML=x(s.r);$('mr'+i).classList.remove('pop');void $('mr'+i).offsetWidth;$('mr'+i).classList.add('pop');
+    let t=`<b>قسمت «${u[i]}»:</b> `;
+    if(op=='+'){t+=`${x(A[i])} + ${x(B[i])}`+(s.cin?` + ${NQ} ${cn(s.cin)}`:'')+` = ${x(s.s)}`;
+      if(i>0){if(s.cout>0)t+=`<br>${x(s.s)} از ${fa(b[i-1])} بیشتر است؛ هر ${fa(b[i-1])} ${u[i]} یک ${u[i-1]} می‌شود. پس ${x(s.s)} = ${cn(s.cout)} ${u[i-1]} و ${x(s.r)}<br>${x(s.r)} را می‌نویسم و ${cn(s.cout)} را به‌عنوان ${NQ} با فلش به قسمت «${u[i-1]}» می‌برم.`;
+        else t+=`<br>${fa(s.s)} از ${fa(b[i-1])} کمتر است؛ پس همان را می‌نویسم و ${NQ} نداریم.`}
+      else t+='<br>جواب این قسمت را می‌نویسم.'}
+    else{if(s.cin)t+=`${x(A[i])} − ${cn(s.cin)} (چون ${QZ} دادیم) = ${x(s.a)}<br>`;
+      if(s.cout>0)t+=`${x(s.a)} از ${x(B[i])} کمتر است؛ نمی‌شود کم کرد! از «${u[i-1]}» یک واحد ${QZ} می‌گیرم (هر ${u[i-1]} برابر ${fa(b[i-1])} ${u[i]} است).<br>${x(s.a)} + ${fa(b[i-1])} = ${x(s.a2)}، و ${x(s.a2)} − ${x(B[i])} = ${x(s.r)}`;
+      else t+=`${x(s.a2)} − ${x(B[i])} = ${x(s.r)}`}
+    if(i>0&&s.cout>0)$('mc'+(i-1)).innerHTML=`<span class="cn">${sg}${fa(s.cout)}</span><span class="ar">➡</span>`;
+    $('mcap').innerHTML=t;k++;
+    if(k>=n){$('mnext').classList.add('hide');$('mcap').innerHTML+='<br>🎯 حالا خودت جواب را در خانه‌ها بنویس.'}};
+  $('mnext').onclick=go;$('mre').onclick=machine}
+
+$('check').onclick=check;$('help').onclick=machine;
+$('next').onclick=()=>{qi++;if(qi<NQN)newQ();else finish()};
+$('back').onclick=()=>{musicStop();setMascot('clock');$('play').classList.add('hide');$('menu').classList.remove('hide');drawMenu();say('کدام کارگاه را انتخاب می‌کنی؟')};
+document.addEventListener('keydown',e=>{if(e.key=='Enter'&&!locked&&!$('play').classList.contains('hide')&&e.target.tagName=='INPUT')check()});
+
+function finish(){const s=first>=16?3:first>=11?2:1;stars[topic]=Math.max(stars[topic]||0,s);confetti();
+  $('pb').style.width='100%';
+  $('grid').innerHTML=`<div class="big" style="grid-column:1/-1">${'⭐'.repeat(s)}</div>`;
+  $('story').textContent=`تو ${fa(first)} سؤال از ${fa(NQN)} را بار اول درست حل کردی!`;
+  ['next','check','help','machine'].forEach(i=>$(i).classList.add('hide'));
+  say(s==3?'استاد اعداد مرکب شدی! 🏆':'کارت عالی بود! دوباره بازی کن تا ستاره‌هایت بیشتر شود.','happy')}
+
+// ===== موسیقی آرام (ساخته‌شده با Web Audio، بدون فایل خارجی) =====
+let ac,mg,timer,nextT,bar=0,musicOn=true;
+const mf=m=>440*Math.pow(2,(m-69)/12);
+const CH=[[48,60,64,67,71],[45,57,60,64,67],[41,53,57,60,64],[43,55,59,62,64]];
+function tone(f,t,d,v,type,att){const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+att);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.1)}
+function playBar(t,k){const c=CH[k%4],e=.42;
+  tone(mf(c[0]),t,e*8,.16,'sine',.5);tone(mf(c[2]),t,e*8,.05,'triangle',.8);tone(mf(c[3]),t,e*8,.05,'triangle',.9);
+  [1,2,3,4,3,2,4,2].forEach((p,j)=>tone(mf(c[p]+12),t+j*e,1.1,.07,'triangle',.02));
+  const P=[72,74,76,79,81,84];
+  [0,2,4,6].forEach(j=>{if(Math.random()<.55)tone(mf(P[rnd(0,5)]),t+j*e+(Math.random()<.3?e:0),1.6,.06,'sine',.03)})}
+function musicInit(){ac=new(window.AudioContext||window.webkitAudioContext)();mg=ac.createGain();mg.gain.value=0;
+  const d=ac.createDelay(1),fb=ac.createGain(),lp=ac.createBiquadFilter();d.delayTime.value=.45;fb.gain.value=.4;lp.type='lowpass';lp.frequency.value=1800;
+  mg.connect(ac.destination);mg.connect(d);d.connect(lp);lp.connect(fb);fb.connect(d);lp.connect(ac.destination)}
+function musicPlay(){if(!musicOn)return;try{if(!ac)musicInit();ac.resume();clearInterval(timer);nextT=ac.currentTime+.2;
+  const s=()=>{while(nextT<ac.currentTime+2){playBar(nextT,bar++);nextT+=.42*8}};s();timer=setInterval(s,600);
+  mg.gain.cancelScheduledValues(ac.currentTime);mg.gain.setValueAtTime(mg.gain.value,ac.currentTime);mg.gain.linearRampToValueAtTime(.7,ac.currentTime+2)}catch(e){}}
+function musicStop(){clearInterval(timer);if(!ac)return;mg.gain.cancelScheduledValues(ac.currentTime);mg.gain.setValueAtTime(mg.gain.value,ac.currentTime);mg.gain.linearRampToValueAtTime(0,ac.currentTime+.8)}
+$('mus').onclick=()=>{musicOn=!musicOn;$('mus').textContent=musicOn?'🔊':'🔇';musicOn?musicPlay():musicStop()};
+
+drawMenu();
+</script>
+</body>
+</html>
