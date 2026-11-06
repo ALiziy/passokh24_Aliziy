@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>شناسنامه ی کسر ها</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Vazirmatn,sans-serif;color:#333;min-height:100vh;overflow-x:hidden;background:#d9f2e6 repeating-radial-gradient(circle at 50% 0,#c4e8d6 0 6px,#d9f2e6 6px 14px)}
+#app{max-width:880px;margin:10px auto;padding:14px 16px 70px;position:relative;z-index:2}
+.fl{position:fixed;font-size:2.4em;z-index:1;animation:fl 4s ease-in-out infinite;pointer-events:none}
+@keyframes fl{50%{transform:translateY(-14px) rotate(8deg)}}
+@keyframes pulse{50%{transform:scale(1.35);color:#e63946}}
+@keyframes teeter{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+@keyframes fo{to{transform:perspective(900px) rotateY(-90deg);opacity:.2}}
+@keyframes fi{from{transform:perspective(900px) rotateY(90deg);opacity:.2}}
+.pulse{display:inline-block;animation:pulse 1.2s infinite}.teeter{display:inline-block;animation:teeter 1s infinite}
+.fo{animation:fo .45s forwards;transform-origin:left}.fi{animation:fi .45s;transform-origin:left}
+.pg{display:none;animation:pop .4s}
+.paper{background:#fffbe9;border:4px double #2e7d5b;border-radius:16px;padding:16px;box-shadow:0 6px 18px #0003}
+h1{text-align:center;color:#2e7d5b;margin:4px 0}
+.title{background:#2e7d5b;color:#fff;border-radius:12px;padding:10px;text-align:center;font-size:1.6em;font-weight:bold}
+.btn{font:inherit;font-size:1.1em;border:0;border-radius:12px;padding:10px 18px;margin:6px;background:#ff9f1c;color:#fff;cursor:pointer;box-shadow:0 3px #b36b00}
+.btn:hover{transform:scale(1.05)}.btn:disabled{background:#aaa;box-shadow:none;cursor:default;transform:none}
+.big{display:block;width:100%;font-size:1.4em;margin:12px 0;padding:16px}
+.b2{background:#7b4bb7;box-shadow:0 3px #4a2a80}.b3{background:#2e9fd0;box-shadow:0 3px #17607f}.bg{background:#2e7d5b;box-shadow:0 3px #174d37}
+.f{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;font-weight:bold;line-height:1.15;direction:ltr}
+.f b{padding:0 6px;min-width:1.2em;text-align:center}.f i{display:block;width:100%;height:3px;background:currentColor;border-radius:2px}
+.mx{display:inline-flex;align-items:center;direction:ltr}.w{font-size:1.7em;font-weight:bold;margin:0 3px}
+.gap{display:inline-block;width:28px}
+.inp{direction:ltr;display:flex;justify-content:center;align-items:center;gap:12px;margin:12px}
+.fx{display:flex;flex-direction:column;align-items:center;gap:4px}.fx .ln{width:100%;height:4px;background:#333}
+.sq{width:64px;height:54px;font-size:1.6em;text-align:center;border:3px solid #2e7d5b;border-radius:8px;font-family:inherit}
+.cap{text-align:center;font-size:.85em;color:#666}
+.idc{border:4px solid #2e7d5b;border-radius:12px;background:#fffbe9 repeating-linear-gradient(45deg,#0000 0 10px,#2e7d5b0d 10px 20px);margin-top:14px;overflow:hidden}
+.hd{background:#2e7d5b;color:#fff;padding:8px;text-align:center;font-size:1.3em}.hd h2{margin:0;font-size:1.6em;font-weight:900}
+.bd{display:flex;direction:ltr;gap:12px;padding:12px;flex-wrap:wrap}
+.ph{width:200px;text-align:center;border:3px dashed #2e7d5b;border-radius:10px;padding:8px;background:#fff;align-self:flex-start;direction:rtl}
+.rows{flex:1;min-width:250px;direction:rtl}.r{display:flex;gap:8px;align-items:center;border-bottom:1px dotted #999;padding:6px 0;flex-wrap:wrap}
+.t{font-weight:bold;color:#2e7d5b;min-width:150px}.v{font-size:1.2em}
+.lab{display:grid;grid-template-columns:70px auto;direction:ltr;align-items:center;gap:4px 12px;margin:8px auto;width:max-content;font-size:1.5em}
+.lab>div{text-align:center;font-weight:bold}.lab>span{font-size:.6em;direction:rtl}.lab .ln{border-top:4px solid #333}
+.ar{direction:ltr;margin:8px 0;font-size:1.3em}.ar em{font-size:.75em;font-style:normal;direction:rtl;margin-inline-start:8px;unicode-bidi:plaintext}
+.xp{background:#fff;border:3px solid #7b4bb7;border-radius:12px;padding:12px;margin:10px;display:none}
+.nums button,.chip{font:inherit;width:42px;height:42px;border-radius:50%;border:2px solid #7b4bb7;background:#fff;margin:3px;cursor:pointer;font-weight:bold}
+.nums button.on{background:#7b4bb7;color:#fff}
+.sv{max-width:100%}
+.ops{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.op{font:inherit;font-size:1.3em;background:#fff;border:3px solid #2e9fd0;border-radius:12px;padding:10px;cursor:pointer;min-height:60px}
+.op.s{background:#ffe08a;border-color:#ff9f1c}
+.bar{display:flex;justify-content:space-between;font-weight:bold;background:#fff;padding:8px;border-radius:10px}
+.warn{color:#e63946;animation:pulse .8s infinite}
+.lv button{min-width:140px}
+.msg{color:#e63946;font-weight:bold;text-align:center;min-height:1.4em}
+.st{font-size:5em;text-align:center;animation:teeter 1s infinite}
+.chip{cursor:default;opacity:.8}.chip.g{background:#c8f5d4;border-color:#1b9a4b}.chip.rd{background:#ffd0d0;border-color:#d62828}.chip.act{cursor:pointer;opacity:1;animation:pulse 1.2s infinite}
+.det{background:#fff;border-radius:10px;padding:10px;margin:8px 0;display:none;border:2px solid #999}
+.sec{border-radius:12px;padding:10px;margin:10px 0}.sg{background:#e8fbee}.sr{background:#fdeaea}
+.foot{text-align:center;margin-top:18px;font-weight:bold;color:#2e7d5b;font-size:1.1em}
+@media(max-width:560px){.ops{grid-template-columns:1fr}.fl{font-size:1.5em}}
+</style></head><body>
+<span class="fl" style="top:8%;right:1%">🦄</span><span class="fl" style="top:30%;left:1%;animation-delay:1s">🐼</span><span class="fl" style="top:60%;right:1%;animation-delay:2s">🧚‍♀️</span><span class="fl" style="bottom:6%;left:2%;animation-delay:.5s">🐲</span><span class="fl" style="top:4%;left:3%;animation-delay:1.5s">🍕</span><span class="fl" style="bottom:4%;right:3%;animation-delay:2.5s">🌈</span>
+<div id="app">
+<div class="title">📜 شناسنامه ی کسر ها 📜</div>
+
+<div class="pg paper" id="home" style="margin-top:12px">
+<h1>سلام دوست من! 👋</h1>
+<p style="text-align:center">بیا با هم برای کسرها شناسنامه بسازیم و یاد بگیریم!</p>
+<button class="btn big" onclick="go('learn')">📖 صفحه ی یادگیری</button>
+<button class="btn big b2" onclick="go('qname')">✏️ صفحه ی آزمون</button>
+<button class="btn big b3" onclick="go('guide')">🧭 صفحه ی راهنما</button>
+</div>
+
+<div class="pg paper" id="learn" style="margin-top:12px">
+<button class="btn bg" onclick="go('home')">🏠 صفحه ی اول</button>
+<p style="font-size:1.2em;text-align:center">داخل مربع ها اعداد کسر را بنویس تا شناسنامه ی آن را برات بفرستم 😊</p>
+<div class="inp"><input class="sq" id="iw" inputmode="numeric" maxlength="2"><div class="fx"><input class="sq" id="in" inputmode="numeric" maxlength="2"><div class="ln"></div><input class="sq" id="id" inputmode="numeric" maxlength="2"></div></div>
+<div class="cap">مربع اول (سمت چپ): عدد صحیح، فقط برای عدد مخلوط (برای کسر خالی بگذار یا ۰ بنویس) — مربع بالا: صورت — مربع پایین: مخرج</div>
+<div class="msg" id="lm"></div>
+<div style="text-align:center"><button class="btn" onclick="mkCard()">📜 شناسنامه</button></div>
+<div id="cardbox"></div>
+</div>
+
+<div class="pg paper" id="qname" style="margin-top:12px">
+<button class="btn bg" onclick="go('home')">🏠 صفحه ی اول</button>
+<h1>اسمت رو بنویس ✍️</h1>
+<p style="text-align:center">منظور از نام یعنی همون اسم خودت. مثلاً: <b>علی</b> یا <b>فاطمه</b> (فقط اسم کوچک کافیه!)</p>
+<div style="text-align:center"><input id="nm" class="sq" style="width:80%;max-width:320px;font-size:1.3em" placeholder="اسمت رو اینجا بنویس"></div>
+<div class="msg" id="nmm"></div>
+<h3 style="text-align:center">سطح آزمون رو انتخاب کن:</h3>
+<div style="text-align:center" class="lv"><button class="btn bg" onclick="startQ(0)">🟢 آسان</button><button class="btn" onclick="startQ(1)">🟠 متوسط</button><button class="btn b2" onclick="startQ(2)">🔴 حرفه ای</button></div>
+</div>
+
+<div class="pg paper" id="quiz" style="margin-top:12px"><div id="qcard"></div></div>
+
+<div class="pg paper" id="res" style="margin-top:12px"></div>
+<div class="pg paper" id="rep" style="margin-top:12px"></div>
+
+<div class="pg paper" id="guide" style="margin-top:12px">
+<button class="btn bg" onclick="go('home')">🏠 صفحه ی اول</button>
+<h1>🧭 راهنمای بازی</h1>
+<p>🔹 <b>صفحه ی یادگیری:</b> توی مربع ها عدد کسرت رو بنویس؛ مربع بالا «صورت» و مربع پایین «مخرج» است. اگه عدد مخلوط می خوای، عدد صحیحش رو توی مربع سمت چپ بنویس. بعد روی دکمه ی «شناسنامه» بزن تا شناسنامه ی کسرت بیاد.</p>
+<p>🔹 هر جا چیزی رو نفهمیدی، دکمه ی «برایم توضیح بده» رو بزن و روی شماره ی همون بخش کلیک کن.</p>
+<p>🔹 <b>صفحه ی آزمون:</b> اول اسمت رو بنویس (حتماً!)، بعد سطح آسان، متوسط یا حرفه ای رو انتخاب کن. هر سطح ۱۰ سوال ۴ گزینه ای داره.</p>
+<p>🔹 برای هر سوال ۱ دقیقه وقت داری. اگه زودتر جواب دادی، دکمه ی «سوال بعدی» رو بزن. به سوال قبلی نمی شه برگشت!</p>
+<p>🔹 کل آزمون ۱۱ دقیقه است. وقتی زمان داره تموم می شه، عدد قرمز و لرزون می شه.</p>
+<p>🔹 آخر آزمون امتیازت رو می بینی و با «دیدن کارنامه» می فهمی کدوم سوال ها درست یا غلط بودن و با «برایم توضیح بده» دلیلش رو یاد می گیری. 🎉</p>
+</div>
+<div class="foot">طراح : علیرضا ایزی</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),sh=a=>a.sort(()=>Math.random()-.5);
+const PD='۰۱۲۳۴۵۶۷۸۹',P=x=>String(x).replace(/\d/g,d=>PD[d]),E=s=>String(s).replace(/[۰-۹]/g,d=>PD.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+const O=['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه','ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'],T=['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
+const W=n=>n<20?O[n]:T[n/10|0]+(n%10?' و '+O[n%10]:''),OU=u=>({2:'دوم',3:'سوم'})[u]||W(u)+'م',OR=n=>n==30?'سی‌ام':n<20?OU(n):n%10?T[n/10|0]+' و '+OU(n%10):W(n)+'م';
+const fr=(n,d)=>`<span class="f"><b>${P(n)}</b><i></i><b>${P(d)}</b></span>`;
+const mx=(w,n,d)=>`<span class="mx">${w?`<span class="w">${P(w)}</span>`:''}${fr(n,d)}</span>`;
+const sv=(t,d,c='#ff9f1c')=>{const k=Math.min(6,Math.max(1,Math.ceil(t/d))),W=150;let s='';for(let r=0;r<k;r++){const f=Math.max(0,Math.min(d,t-r*d));for(let i=0;i<d;i++)s+=`<rect x="${r*(W+14)+i*W/d}" y="4" width="${W/d}" height="46" fill="${i<f?c:'#fff'}" stroke="#444" stroke-width="1.5"/>`}return `<svg class="sv" viewBox="0 0 ${k*(W+14)-14} 54" width="${Math.min(280,k*110)}">${s}</svg>`};
+const lab=(n,d)=>`<div class="lab"><div class="pulse">${P(n)}</div><span>⟵ صورت (عدد بالا)</span><div class="ln"></div><span>⟵ خط کسری</span><div class="pulse">${P(d)}</div><span>⟵ مخرج (عدد پایین)</span></div>`;
+const ar=(h,l)=>`<div class="ar"><span class="pulse">${h}</span><em>⟵ ${l}</em></div>`;
+function go(id){document.querySelectorAll('.pg').forEach(p=>p.style.display=p.id==id?'block':'none');scrollTo(0,0)}
+go('home');
+
+/* ---------- شناسنامه ---------- */
+let IT=[];
+function mkCard(){
+ const w=+E($('#iw').value||0),n=+E($('#in').value),d=+E($('#id').value),m=$('#lm');
+ if(!n||!d||n<1||d<1||isNaN(w)){m.textContent='لطفاً صورت و مخرج رو بنویس (عدد بزرگ تر از صفر) 🙂';return}
+ if(w>0&&n>=d){m.textContent='توی عدد مخلوط، صورت باید از مخرج کوچک تر باشه. مثلاً ۲ و ۱ چهارم 😊';return}
+ m.textContent='';const M=w>0,t=w*d+n,g=gcd(n,d),it=IT=[],a=(x,v,e)=>it.push({t:x,v,e}),rd=(M?W(w)+' و ':'')+W(n)+' '+OR(d),S=(x,y)=>`<p>${x}</p>`+(y||'');
+ if(!M){
+  a('نام ریاضی',fr(n,d),lab(n,d)+S('این همون شکلیه که ریاضی دان ها کسر رو می نویسن: یه عدد بالای خط کسری و یه عدد زیرش. دقت کن که کسر رو با / نمی نویسیم تا با عدد اعشاری اشتباه نشه!'));
+  a('نام خواندنی',rd,S(`منظور از «نام خواندنی» یعنی همون اسمی که وقتی می خوایم کسر رو بخونیم می گیم. اول عدد صورت رو می خونیم (<span class="teeter">${W(n)}</span>) و بعد عدد مخرج رو با «م» می خونیم (<span class="teeter">${OR(d)}</span>).`,ar(fr(n,d),rd)));
+  if(n==1&&d<6)a('نام دیگر',{2:'نیم (نصف)',3:'ثُلث',4:'رُبع',5:'خُمس'}[d],S(`بعضی کسرها اسم قدیمی و عربی هم دارن. ${fr(1,d)} رو ${{2:'نیم یا نصف',3:'ثُلث',4:'رُبع',5:'خُمس'}[d]} هم می گن.`));
+  a('معنی کسر',`${W(n)} قسمت از ${W(d)} قسمت مساوی`,sv(n,d)+S(`شکل رو به <b>${P(d)}</b> قسمت مساوی تقسیم کردیم و <b>${P(n)}</b> قسمتش رو رنگ زدیم.`));
+  a('صورت و مخرج',`صورت: ${P(n)}   مخرج: ${P(d)}`,lab(n,d)+S('صورت می گه چند قسمت رو برداشتیم. مخرج می گه کل شکل به چند قسمت مساوی تقسیم شده.'));
+  a('معکوس کسر',fr(d,n),`<div style="text-align:center;font-size:1.6em">${fr(n,d)} <span class="teeter">🔄</span> ${fr(d,n)}</div>`+S('برای معکوس، فقط جای صورت و مخرج رو با هم عوض می کنیم؛ عدد بالا میره پایین و عدد پایین میاد بالا.'));
+  a('کسر مساوی با آن',fr(2*n,2*d),sv(n,d)+sv(2*n,2*d)+S(`صورت و مخرج رو در <b>۲</b> ضرب کردیم. شکل ها رو ببین؛ مقدار رنگ شده یکیه! پس ${fr(n,d)} = ${fr(2*n,2*d)}`));
+  a('کسر ساده شده',g>1?fr(n/g,d/g):'این کسر ساده شده است',S(g>1?`صورت و مخرج رو بر بزرگ ترین عددی که هر دوشون رو می شماره، یعنی <b>${P(g)}</b> تقسیم کردیم: ${fr(n,d)} = ${fr(n/g,d/g)}`:'عدد دیگه ای نیست که هم صورت و هم مخرج رو بشماره (به جز ۱)، پس کسر از قبل ساده است.'));
+  a('نوع کسر',n==d?`یک واحد کامل: ${fr(n,d)} = ${P(1)}`:n>d?'بزرگ تر از واحد':'کوچک تر از واحد',S(`صورت ${P(n)} و مخرج ${P(d)} رو مقایسه می کنیم: اگه صورت کوچک تر باشه، کسر «کوچک تر از واحد» است؛ اگه مساوی باشه «یک واحد کامل» و اگه بزرگ تر باشه «بزرگ تر از واحد».`));
+  if(n>d){const q=n/d|0,r=n%d;a('تبدیل به عدد مخلوط',r?mx(q,r,d):P(q),S(`${P(n)} رو بر ${P(d)} تقسیم می کنیم. خارج قسمت <b>${P(q)}</b> می شه عدد صحیح و باقی مانده <b>${P(r)}</b> می شه صورت. مخرج همون ${P(d)} می مونه.`,sv(n,d)))}
+  a('چند کسر بزرگ تر از آن',[1,2,3].map(k=>fr(n+k,d)).join('<span class="gap"></span>'),S('مخرج ها رو نگه می داریم و صورت رو بیشتر می کنیم. وقتی تکه ها هم اندازه ان، تکه های بیشتر یعنی کسر بزرگ تر!'));
+ }else{
+  a('نام ریاضی',mx(w,n,d),ar(P(w),'اول عدد صحیح (سمت چپ)')+ar(fr(n,d),'بعد کسر')+S('توی عدد مخلوط از چپ به راست اول عدد صحیح و بعد کسر رو می نویسیم. همون مربع اول که پر کردی!'));
+  a('نام خواندنی',`${W(w)} و ${W(n)} ${OR(d)}`,S(`اول عدد صحیح (${W(w)}) رو می خونیم، «و» می گیم و بعد کسر رو می خونیم (${W(n)} ${OR(d)}).`));
+  a('معنی عدد مخلوط',`${W(w)} واحد کامل و ${W(n)} قسمت از ${W(d)} قسمت مساوی`,sv(t,d)+S(`${P(w)} شکل کامل داریم و از شکل بعدی ${P(n)} قسمت از ${P(d)} قسمت رنگ شده.`));
+  a('جزء صحیح و کسری',`صحیح: ${P(w)}   کسر: ${fr(n,d)}`,S('عدد مخلوط دو تیکه داره: یه تیکه عدد صحیح و یه تیکه کسر.'));
+  a('معکوس عدد مخلوط',fr(d,t),S(`اول عدد مخلوط رو به کسر تبدیل می کنیم (${fr(t,d)}) و بعد جای صورت و مخرج رو عوض می کنیم.`));
+  a('عدد مخلوط مساوی با آن',mx(w,2*n,2*d),S(`صورت و مخرج کسر رو در ۲ ضرب کردیم؛ عدد صحیح همون می مونه.`));
+  a('عدد مخلوط ساده شده',g>1?mx(w,n/g,d/g):'این عدد مخلوط ساده شده است',S(g>1?`فقط قسمت کسری رو ساده می کنیم (تقسیم بر ${P(g)}). عدد صحیح تغییر نمی کنه.`:'قسمت کسری دیگه ساده تر نمی شه.'));
+  a('نوع عدد مخلوط','بزرگ تر از واحد',S('چون یه عدد صحیح بزرگ تر یا مساوی ۱ داره، از یک واحد بزرگ تره.'));
+  a('تبدیل به کسر',fr(t,d),S(`عدد صحیح رو در مخرج ضرب می کنیم و با صورت جمع می کنیم: ${P(w)} × ${P(d)} + ${P(n)} = <span class="pulse">${P(t)}</span>. مخرج همون ${P(d)} می مونه. کسر بزرگ تر از واحد!`,sv(t,d)));
+  a('چند عدد مخلوط بزرگ تر از آن',[1,2,3].map(k=>mx(w+k,n,d)).join('<span class="gap"></span>'),S('کسر رو نگه می داریم و عدد صحیح رو بیشتر می کنیم.'));
+ }
+ $('#cardbox').innerHTML=`<div class="idc"><div class="hd">شناسنامه ی<h2>${M?'عدد مخلوط':'کسر'}</h2></div><div class="bd"><div class="ph">${sv(t,d)}<div class="cap">شکل ${M?'عدد مخلوط':'کسر'}</div></div><div class="rows">${it.map((x,i)=>`<div class="r"><span class="t">${P(i+1)}- ${x.t}:</span><span class="v">${x.v}</span></div>`).join('')}</div></div><div style="text-align:center"><button class="btn b2" onclick="$('#xp').style.display='block'">❓ برایم توضیح بده</button></div><div class="xp" id="xp"><b>روی شماره ی هر بخش بزن:</b><div class="nums">${it.map((x,i)=>`<button onclick="xo(${i},this)">${P(i+1)}</button>`).join('')}</div><div id="xt"></div></div></div>`;
+}
+function xo(i,b){document.querySelectorAll('.nums button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#xt').innerHTML=`<h3>${P(i+1)}- ${IT[i].t}</h3><div style="text-align:center;font-size:1.3em">${IT[i].v}</div>${IT[i].e}`}
+
+/* ---------- سوال ها ---------- */
+const gp=L=>{const d=R(2,[6,10,12][L]);return[R(1,d-1),d]};
+function mk(q,c,ws,ex,trap,fb){const o=[c];ws.forEach(x=>{if(o.length<4&&!o.includes(x))o.push(x)});let k=0;while(o.length<4){const x=fb();if(!o.includes(x)||k++>60)o.push(x)}sh(o);return{q,o,a:o.indexOf(c),ex,trap}}
+const fF=()=>fr(R(1,9),R(2,12)),fS=()=>sv(R(1,9),R(2,10)),fN=()=>P(R(1,20));
+const TR='<b>راهکار:</b> ',
+G={
+1:L=>{const[n,d]=gp(L);return mk(`${sv(n,d)}<p>کدام کسر قسمت رنگی شکل را نشان می دهد؟</p>`,fr(n,d),[fr(d,n),fr(d-n,d),fr(n,d+1),fr(n+1,d)],`شکل ${P(d)} قسمت مساوی دارد (مخرج) و ${P(n)} قسمتش رنگیه (صورت). پس ${fr(n,d)}`,`ممکنه کسر رو برعکس نوشته باشی یا قسمت های سفید (${P(d-n)}) رو شمرده باشی. ${TR}صورت = قسمت های رنگی، مخرج = همه ی قسمت های مساوی.`,fF)},
+2:L=>{const[n,d]=gp(L);return mk(`<p>کدام شکل به اندازه ی ${fr(n,d)} رنگ شده است؟</p>`,sv(n,d),[sv(d-n,d),sv(n,d+1),sv(n+1,d),sv(Math.max(1,n-1),d)],`مخرج ${P(d)} یعنی شکل ${P(d)} قسمت مساوی داشته باشه و صورت ${P(n)} یعنی ${P(n)} قسمتش رنگی باشه.`,`ممکنه به جای قسمت های رنگی، سفیدها رو شمرده باشی یا تعداد کل قسمت ها با مخرج نخونده. ${TR}اول تعداد کل قسمت ها رو بشمار، بعد رنگی ها رو.`,fS)},
+3:L=>{const[n,d]=gp(L);return mk(`<p>کسر ${fr(n,d)} را چطور می خوانیم؟</p>`,W(n)+' '+OR(d),[W(d)+' '+OR(n),W(n)+' '+W(d),W(n)+' '+OR(d+1),W(d)+' و '+W(n)],`اول صورت (${W(n)}) بعد مخرج با «م» (${OR(d)}).`,`احتمالاً جای صورت و مخرج رو عوض خوندی. ${TR}اول عدد بالا رو بخون، بعد عدد پایین رو با «م».`,()=>W(R(1,9))+' '+OR(R(2,12)))},
+4:L=>{const[n,d]=gp(L),m=R(0,1);return mk(`<p>در کسر ${fr(n,d)} ${m?'مخرج':'صورت'} کدام است؟</p>`,P(m?d:n),[P(m?n:d),P(n+d),P(d+1),P(Math.abs(d-n)+1)],`${m?'مخرج عدد پایین خط کسری':'صورت عدد بالای خط کسری'} است: ${P(m?d:n)}.`,`صورت و مخرج رو با هم اشتباه گرفتی. ${TR}صورت = «بالا»، مخرج = «پایین» (مخرج مثل پایه ی خونه است).`,fN)},
+5:L=>{let n,d,k=L?R(0,2):R(0,1);[n,d]=gp(L);if(k==1)n=d;if(k==2)n=d+R(1,3);const c=n==d?'یک واحد کامل':n>d?'بزرگ تر از واحد':'کوچک تر از واحد';return mk(`<p>کسر ${fr(n,d)} از چه نوعی است؟</p>`,c,['کوچک تر از واحد','بزرگ تر از واحد','یک واحد کامل','عدد اعشاری'],`صورت ${P(n)} و مخرج ${P(d)} رو مقایسه می کنیم: ${c}.`,`صورت و مخرج رو درست مقایسه نکردی یا خط کسری رو با اعشار اشتباه گرفتی. ${TR}صورت از مخرج کمتره؟ کوچک تر؛ مساوی؟ یک واحد کامل؛ بیشتر؟ بزرگ تر از واحد.`,()=>'هیچ کدام')},
+6:L=>{const[n,d]=gp(L);return mk(`<p>معکوس کسر ${fr(n,d)} کدام است؟</p>`,fr(d,n),[fr(n,d),fr(n+1,d),fr(d+1,n),fr(d,n+1)],`جای صورت و مخرج عوض می شه: ${fr(d,n)}.`,`فقط یکی از اعداد رو عوض کردی یا کسر رو تغییر ندادی. ${TR}هر دو عدد باید جاشون رو عوض کنن.`,fF)},
+7:L=>{const[n,d]=gp(L),k=R(2,3+L);return mk(`<p>کدام کسر با ${fr(n,d)} مساوی است؟</p>`,fr(n*k,d*k),[fr(n*k,d),fr(n,d*k),fr(n*k+1,d*k),fr(n+k,d+k)],`صورت و مخرج رو در ${P(k)} ضرب کردیم: ${fr(n*k,d*k)}.`,`فقط یکی از صورت یا مخرج رو ضرب کردی یا جمع کردی. ${TR}برای کسر مساوی، صورت و مخرج را در یک عدد ضرب (نه جمع) می کنیم و هر دو را!`,fF)},
+8:L=>{let a,b,g=R(2,5);do{b=R(3,8);a=R(1,b-1)}while(gcd(a,b)>1);const n=a*g,d=b*g;return mk(`<p>کسر ${fr(n,d)} را ساده کن.</p>`,fr(a,b),[fr(n,d),g%2==0&&g>2?fr(n/2,d/2):fr(a,b+1),fr(a+1,b),fr(b,a)],`صورت و مخرج رو بر ${P(g)} تقسیم می کنیم: ${fr(a,b)}.`,`ممکنه ساده نکرده باشی یا فقط نصفش کرده باشی (کامل ساده نشده). ${TR}تا جایی که عدد مشترک وجود داره تقسیم کن.`,fF)},
+9:L=>{const d=R(2,8),q=R(1,4),r=R(1,d-1),n=q*d+r;return mk(`<p>کسر ${fr(n,d)} را به عدد مخلوط تبدیل کن.</p>`,mx(q,r,d),[mx(r,q,d),mx(q+1,r,d),mx(q,d-r,d),mx(q,r,d+1)],`${P(n)} ÷ ${P(d)}: خارج قسمت ${P(q)} (عدد صحیح)، باقی مانده ${P(r)} (صورت)، مخرج همان ${P(d)}.`,`خارج قسمت و باقی مانده رو جابجا گذاشتی یا مخرج رو عوض کردی. ${TR}خارج قسمت = عدد صحیح؛ باقی مانده = صورت؛ مخرج ثابت.`,()=>mx(R(1,4),R(1,5),R(6,9)))},
+10:L=>{const d=R(2,8),q=R(1,4),r=R(1,d-1),t=q*d+r;return mk(`<p>عدد مخلوط ${mx(q,r,d)} را به کسر تبدیل کن.</p>`,fr(t,d),[fr(q+r,d),fr(q*d-r,d),fr(r*d+q,d),fr(t,q)],`${P(q)} × ${P(d)} + ${P(r)} = ${P(t)}، مخرج همان ${P(d)}: ${fr(t,d)}.`,`به جای ضرب عدد صحیح در مخرج، جمع کردی یا جای اعداد رو اشتباه گرفتی. ${TR}عدد صحیح × مخرج، بعد + صورت.`,fF)},
+11:L=>{const[n,d]=gp(L);return mk(`<p>کسر ${fr(n,d)} یعنی ........ قسمت از ${P(d)} قسمت مساوی.</p>`,P(n),[P(d),P(d-n),P(n+1),P(n+d)],`صورت تعداد قسمت های برداشته شده است: ${P(n)}.`,`مخرج یا قسمت های باقی مانده رو انتخاب کردی. ${TR}جای خالی برای «صورت» است.`,fN)},
+12:L=>{const[n,d]=gp(L);return mk(`<p>کدام جمله درست است؟</p>`,`در کسر ${fr(n,d)} صورت ${P(n)} و مخرج ${P(d)} است`,[`در کسر ${fr(n,d)} صورت ${P(d)} و مخرج ${P(n)} است`,`کسر ${fr(n,d)} از یک واحد کامل بزرگ تر است`,`نام خواندنی ${fr(n,d)} ، ${W(d)} ${OR(n)} است`],`صورت بالا (${P(n)}) و مخرج پایین (${P(d)}) است و چون ${P(n)} از ${P(d)} کمتره کسر از یک واحد کوچک تره.`,`جمله ها رو با دقت با کسر مقایسه نکردی. ${TR}هر جمله رو جداگانه امتحان کن.`,()=>'هیچ کدام')},
+13:L=>{const[n,d]=gp(L),k=R(1,3);return mk(`<p>کدام کسر از ${fr(n,d)} بزرگ تر است؟</p>`,fr(n+k,d),[fr(n,d+1),fr(n,d+2),n>1?fr(n-1,d):fr(n,d+3)],`مخرج ها مساوی اند، پس صورت بزرگ تر یعنی کسر بزرگ تر: ${fr(n+k,d)}.`,`وقتی مخرج بزرگ تر می شه تکه ها کوچیک تر می شن. ${TR}مخرج برابر: صورت بزرگ تر، کسر بزرگ تر.`,fF)},
+14:L=>{const w=R(1,2),[n,d]=gp(L);return mk(`${sv(w*d+n,d)}<p>این شکل چه عدد مخلوطی را نشان می دهد؟</p>`,mx(w,n,d),[mx(n,w,d),mx(w,d-n,d),mx(w+1,n,d),mx(w,n,d+1)],`${P(w)} شکل کامل رنگیه و از شکل بعدی ${P(n)} قسمت از ${P(d)} قسمت رنگ شده.`,`شکل های کامل رو نشمردی یا جای عدد صحیح و صورت رو عوض کردی. ${TR}اول شکل های کامل (عدد صحیح)، بعد قسمت رنگی شکل آخر (صورت).`,()=>mx(R(1,3),R(1,5),R(6,9)))}
+},POOL=[[1,2,3,4,11,12,5,1,2,6],[1,2,5,6,7,9,10,13,14,12],[8,9,10,7,13,14,6,5,12,3]];
+
+/* ---------- آزمون ---------- */
+let Q=[],qi=0,sel=null,A=[],tq=60,tt=660,tm=null,NAME='',lock=0,LV=0;
+function startQ(L){const n=$('#nm').value.trim();if(!n){$('#nmm').textContent='اول اسمت رو بنویس 🙂 (مثلاً علی یا فاطمه)';$('#nm').focus();return}
+ NAME=n;LV=L;Q=sh(POOL[L].slice()).map(k=>G[k](L));qi=0;A=[];tt=660;go('quiz');draw();clearInterval(tm);tm=setInterval(tick,1000)}
+function draw(){sel=null;tq=60;lock=0;const q=Q[qi];$('#qcard').innerHTML=`<div class="bar"><span>📄 سوال ${P(qi+1)} از ${P(10)}</span><span id="tq">⏱ ${P(60)}</span><span id="tt">کل: ${fmt(tt)}</span></div><div style="font-size:1.25em;text-align:center;margin:10px">${q.q}</div><div class="ops">${q.o.map((o,i)=>`<button class="op" onclick="pick(${i},this)">${o}</button>`).join('')}</div><div style="text-align:center"><button class="btn" id="nx" disabled onclick="nxt()">${qi==9?'پایان آزمون ✅':'سوال بعدی ⬅️'}</button></div>`}
+const fmt=s=>P(String(s/60|0).padStart(2,'0')+':'+String(s%60).padStart(2,'0'));
+function pick(i,b){if(lock)return;sel=i;document.querySelectorAll('.op').forEach(x=>x.classList.remove('s'));b.classList.add('s');$('#nx').disabled=false}
+function tick(){if(lock)return;tq--;tt--;const a=$('#tq'),b=$('#tt');if(a){a.textContent='⏱ '+P(tq);a.className=tq<=10?'warn':''}if(b){b.textContent='کل: '+fmt(tt);b.className=tt<=60?'warn':''}
+ if(tt<=0){A[qi]=sel;fin()}else if(tq<=0)nxt()}
+function nxt(){if(lock)return;lock=1;A[qi]=sel;if(qi==9){fin();return}const c=$('#qcard');c.className='fo';setTimeout(()=>{qi++;draw();c.className='fi';setTimeout(()=>c.className='',500)},450)}
+function fin(){clearInterval(tm);go('res');const sc=Q.filter((q,i)=>A[i]===q.a).length;const[s,m]=sc==10?['🏆','عالیه! تو یه نابغه ی کسری هستی! 🌟']:sc>=8?['🥇','آفرین! خیلی عالی بود! 👏']:sc>=5?['😊','خوبه! با کمی تمرین بهتر هم می شی 👍']:['🤗','نگران نباش! دوباره یاد بگیر و تلاش کن، می تونی! 💪'];
+ $('#res').innerHTML=`<h1>پایان آزمون 🎉</h1><div class="st">${s}</div><h2 style="text-align:center">${NAME} عزیز، امتیاز تو: ${P(sc)} از ${P(10)}</h2><p style="text-align:center;font-size:1.2em">${m}</p><div style="text-align:center"><button class="btn b2" onclick="report()">📋 دیدن کارنامه</button><button class="btn bg" onclick="go('home')">🏠 صفحه ی اول</button></div>`}
+function report(){const ok=[],no=[];Q.forEach((q,i)=>(A[i]===q.a?ok:no).push(i));
+ const sec=(t,l,c,k)=>`<div class="sec ${c=='g'?'sg':'sr'}"><h3>${t}</h3>${l.length?l.map(i=>`<button class="chip ${c} ${k}" data-i="${i}" onclick="det(${i},'${k}')">${P(i+1)}</button>`).join(''):'—'}<div style="text-align:center"><button class="btn b2" onclick="document.querySelectorAll('.${k}').forEach(x=>x.classList.add('act'))">❓ برایم توضیح بده</button></div><div class="det" id="d${k}"></div></div>`;
+ $('#rep').innerHTML=`<h1>📋 کارنامه ی ${NAME}</h1>${sec('✅ سوالات درست',ok,'g','ka')}${sec('❌ سوالات نادرست',no,'rd','kb')}<div style="text-align:center"><button class="btn bg" onclick="go('home')">🏠 صفحه ی اول</button></div>`;go('rep')}
+function det(i,k){const c=document.querySelector(`.${k}[data-i="${i}"]`);if(!c.classList.contains('act'))return;const q=Q[i],d=$('#d'+k),ok=A[i]===q.a;d.style.display='block';
+ d.innerHTML=`<b>سوال ${P(i+1)}:</b><div style="text-align:center">${q.q}</div><p>✅ پاسخ درست: ${q.o[q.a]}</p><p>${q.ex}</p>${ok?'':`<p>${A[i]==null?'⏰ به این سوال جواب ندادی.':'❌ پاسخ تو: '+q.o[A[i]]}</p><p>🪤 <b>دلیل اشتباه:</b> ${q.trap}</p>`}`}
+</script></body></html>
