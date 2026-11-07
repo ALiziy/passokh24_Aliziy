@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>کارگاه کسر ها</title>
+<style>
+*{box-sizing:border-box;font-family:Tahoma,Vazirmatn,sans-serif}
+body{margin:0;background:linear-gradient(#bfe9ff,#fff7d6);min-height:100vh;overflow-x:hidden;color:#333}
+.scr{display:none;min-height:100vh;padding:14px 14px 50px;position:relative}
+.scr.on{display:block;animation:fi .5s}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+h1,h2{text-align:center;margin:6px}
+.btn{background:#ff7043;color:#fff;border:0;border-radius:14px;padding:10px 18px;font-size:17px;cursor:pointer;box-shadow:0 4px 0 #c0471f;margin:4px}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.btn.g{background:#43a047;box-shadow:0 4px 0 #2b7a30}.btn.b{background:#1e88e5;box-shadow:0 4px 0 #0d5ea8}
+.foot{position:fixed;bottom:0;left:0;right:0;text-align:center;background:#fffc;padding:5px;font-size:14px;z-index:5}
+.fl{position:fixed;font-size:34px;z-index:1;pointer-events:none;animation:flo 6s ease-in-out infinite}
+@keyframes flo{50%{transform:translateY(-18px) rotate(8deg)}}
+.pie{display:inline-block;width:44px;height:44px;border-radius:50%;border:3px solid #333;vertical-align:middle}
+.back{position:absolute;top:10px;left:10px;z-index:3}
+/* home */
+.house{max-width:640px;margin:0 auto;position:relative;padding-top:120px}
+.roof{position:absolute;top:30px;left:-30px;right:-30px;height:110px;background:#c62828;clip-path:polygon(50% 0,100% 100%,0 100%);display:flex;justify-content:center;align-items:flex-end;gap:14px;padding-bottom:8px}
+.sign{position:absolute;top:0;left:50%;transform:translateX(-50%);background:#8d5524;color:#fff;border:4px solid #5d3a12;border-radius:10px;padding:8px 22px;font-size:26px;font-weight:bold;z-index:4;animation:sw 3s ease-in-out infinite;transform-origin:top center;white-space:nowrap}
+@keyframes sw{50%{transform:translateX(-50%) rotate(2deg)}0%,100%{transform:translateX(-50%) rotate(-2deg)}}
+.wall{background:#ffe0b2;border:5px solid #8d5524;border-radius:0 0 14px 14px;padding:16px 10px 0;position:relative;z-index:2}
+.deco{display:flex;justify-content:space-around;font-size:30px;margin-bottom:12px}
+.doors{display:flex;gap:12px;justify-content:space-around}
+.dw{text-align:center;flex:1}.lbl{background:#fff;border:3px solid #8d5524;border-radius:10px;padding:4px;font-weight:bold;font-size:15px;margin-bottom:6px}
+.door{height:190px;background:radial-gradient(#fff3a0,#a0522d 80%);border-radius:90px 90px 0 0;position:relative;cursor:pointer;border:4px solid #5d3a12;overflow:hidden}
+.leaf{position:absolute;inset:0;background:linear-gradient(90deg,#a1662f,#7b4a1e);border-radius:86px 86px 0 0;transform-origin:right center;transition:transform .8s}
+.leaf:after{content:"";position:absolute;left:14px;top:55%;width:14px;height:14px;background:gold;border-radius:50%}
+.leaf:before{content:"½";position:absolute;top:30px;width:100%;text-align:center;font-size:40px;color:#ffe9b0}
+.door.open .leaf{transform:perspective(500px) rotateY(95deg)}
+.door:hover{filter:brightness(1.1)}
+/* learn */
+.strip{display:grid;grid-template-columns:1fr 1fr 1fr;border:4px solid #5d3a12;border-radius:12px;background:#fff8e1;max-width:900px;margin:8px auto 0}
+.strip>div{border-left:3px solid #5d3a12;padding:8px;text-align:center;min-height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.strip>div:last-child{border:0}
+.wbw{max-width:900px;margin:10px auto;background:#fff;border:6px solid #607d8b;border-radius:12px;position:relative}
+#wb{width:100%;display:block}
+#sub{min-height:70px;background:#263238;color:#fff;padding:10px 14px;font-size:18px;line-height:1.9;border-radius:0 0 6px 6px}
+#sub b{color:#ffeb3b}.pl{display:inline-block;animation:pu 1s infinite}.te{display:inline-block;animation:te .6s infinite;color:#ff8a80}
+@keyframes pu{50%{transform:scale(1.25)}}@keyframes te{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;font-weight:bold;line-height:1.2}
+.fr i{font-style:normal;padding:0 6px}.fr i:first-child{border-bottom:3px solid currentColor}
+.mx{display:inline-flex;align-items:center;gap:2px;direction:ltr;unicode-bidi:isolate}.mx>b{font-size:1.4em}
+.grid{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;max-width:800px;margin:auto}
+.sp{width:130px;height:130px;background:#fff;border:4px solid #ccc;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sp.sel{border-color:#43a047;background:#e8f5e9}
+.sp svg{animation:wob 3s ease-in-out infinite}.sp:nth-child(2) svg{animation-duration:2.3s}.sp:nth-child(3) svg{animation-duration:3.7s}.sp:nth-child(4) svg{animation-duration:2.7s}
+@keyframes wob{0%{transform:translate(0,0)}25%{transform:translate(9px,-7px)}50%{transform:translate(-8px,8px)}75%{transform:translate(7px,6px)}100%{transform:translate(0,0)}}
+.sq{display:flex;align-items:center;justify-content:center;gap:12px;direction:ltr;margin:20px}
+.sq input{width:70px;height:70px;font-size:32px;text-align:center;border:4px solid #1e88e5;border-radius:10px}
+.sq .col{display:flex;flex-direction:column;align-items:center;gap:6px}.sq hr{width:90px;border:3px solid #333;margin:0}
+.tip{text-align:center;font-size:19px;margin:10px}
+/* quiz */
+.card{max-width:760px;margin:10px auto;background:#fff;border:5px solid #8d5524;border-radius:16px;padding:16px;position:relative;overflow:hidden}
+.op{display:block;width:100%;margin:8px 0;padding:12px;font-size:20px;border:3px solid #90caf9;background:#e3f2fd;border-radius:12px;cursor:pointer}
+.op.sel{background:#ffe082;border-color:#ff8f00}
+.bar{height:12px;background:#ddd;border-radius:6px;overflow:hidden}.bar div{height:100%;background:#43a047;width:100%}
+.hd{display:flex;justify-content:space-between;font-size:18px;margin-bottom:6px}
+.warn{color:#d32f2f;font-weight:bold;animation:pu .7s infinite}
+.lf{position:absolute;top:0;bottom:0;width:50%;background:repeating-linear-gradient(90deg,#8d5524,#8d5524 18px,#7b4a1e 20px);z-index:5;transition:transform .5s}
+.lf.r{right:0;transform:translateX(100%)}.lf.l{left:0;transform:translateX(-100%)}
+.card.cl .lf.r,.card.cl .lf.l{transform:none}
+.lf:after{content:"🔑";position:absolute;top:45%;font-size:30px}.lf.r:after{left:6px}.lf.l:after{right:6px}
+.num{display:inline-block;width:42px;height:42px;line-height:42px;border-radius:50%;color:#fff;margin:4px;font-size:20px;text-align:center;opacity:.55}
+.num.ok{background:#43a047}.num.no{background:#e53935}.num.act{opacity:1;cursor:pointer;outline:3px solid #333}
+.stk{font-size:90px;text-align:center;animation:pu 1.2s infinite}
+#ex{background:#fffde7;border:3px dashed #ff8f00;border-radius:12px;padding:10px;margin-top:10px;line-height:2;font-size:18px}
+#toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#e53935;color:#fff;padding:10px 20px;border-radius:12px;z-index:50;display:none}
+
+body{background:linear-gradient(160deg,#a8e6ff,#d9c8ff 55%,#ffe2b8)}
+.card,.strip,.wbw{box-shadow:0 8px 20px #0003}
+.btn{background:linear-gradient(#ff8a65,#f4511e);font-weight:bold;letter-spacing:.3px}
+body:not(.home) .fl{display:none}
+.sp{width:150px;height:175px;flex-direction:column;gap:4px;text-align:center}.sp small{font-size:12px;line-height:1.5}
+#sub b.stp{color:#ff5252;font-weight:900;font-size:1.1em}
+.svp{animation:pu 1s infinite;transform-box:fill-box;transform-origin:center}
+.gs{margin-bottom:18px}.gt{display:flex;align-items:center;gap:14px;font-size:34px;color:#e53935;font-weight:900}
+.gi{font-size:72px;display:inline-block;animation:te .8s infinite;transform-origin:70% 80%}
+.gs p{margin:4px 0 0}
+</style>
+</head>
+<body class="home">
+<div id="toast"></div>
+<div class="fl" style="top:12%;right:3%">🐻</div><div class="fl" style="top:40%;left:2%;animation-delay:1s">🦊</div><div class="fl" style="top:70%;right:2%;animation-delay:2s">🐰</div><div class="fl" style="top:85%;left:5%;animation-delay:3s">🍕</div>
+
+<!-- HOME -->
+<section id="home" class="scr on">
+ <div class="house">
+  <div class="sign">🛠️ کارگاه کسر ها</div>
+  <div class="roof"><span class="pie" style="background:conic-gradient(#ffd54f 0 50%,#fff 0)"></span><span class="pie" style="background:conic-gradient(#4fc3f7 0 25%,#fff 0)"></span><span class="pie" style="background:conic-gradient(#aed581 0 75%,#fff 0)"></span></div>
+  <div class="wall">
+   <div class="deco"><span style="text-align:center;font-size:20px"><i class="pie" style="background:conic-gradient(#ff7043 0 50%,#fff 0)"></i><br>½</span><span style="text-align:center;font-size:20px"><i class="pie" style="background:conic-gradient(#ffd54f 0 25%,#fff 0)"></i><br>¼</span><span style="text-align:center;font-size:20px"><i class="pie" style="background:conic-gradient(#66bb6a 0 75%,#fff 0)"></i><br>¾</span><span style="text-align:center;font-size:20px"><i class="pie" style="background:conic-gradient(#42a5f5 0 33%,#fff 0)"></i><br>⅓</span></div>
+   <div class="doors">
+    <div class="dw"><div class="lbl">اتاق آموزش</div><div class="door" onclick="go(this,'learn')"><div class="leaf"></div></div></div>
+    <div class="dw"><div class="lbl">اتاق آزمون</div><div class="door" onclick="go(this,'qname')"><div class="leaf"></div></div></div>
+    <div class="dw"><div class="lbl">راهنمای بازی</div><div class="door" onclick="go(this,'guide')"><div class="leaf"></div></div></div>
+   </div>
+  </div>
+ </div>
+ <h2 style="margin-top:20px">🐻 روی یکی از درها بزن تا وارد شوی!</h2>
+</section>
+
+<!-- GUIDE -->
+<section id="guide" class="scr">
+ <button class="btn back" onclick="show('home')">🏠 خانه</button>
+ <h1>📖 راهنمای بازی</h1>
+ <div class="card" style="line-height:2.1;font-size:19px"><div class="gs"><div class="gt"><span class="gi">🔨</span><span>اتاق آموزش</span></div><p>اول «واحد کامل را انتخاب کن» را بزن و یک شکل بردار. بعد «کسر یا عدد مخلوط را وارد کن» را بزن. اگر فقط کسر می‌خواهی، مربع سمت چپ را خالی بگذار یا صفر بنویس. اگر عدد مخلوط می‌خواهی، عدد صحیح را همان‌جا بنویس. هر شکل قانون خودش را دارد: مثلاً مکعب فقط ۶ قسمت و هرم ۴ قسمت دارد، و ساعت باید دقیقه‌ها را درست تقسیم کند. بعد «شروع کن» را بزن و تخته‌ی سفید را تماشا کن. مرحله‌به‌مرحله روی دفترت بکش و بنویس!</p></div><div class="gs"><div class="gt"><span class="gi">🔑</span><span>اتاق آزمون</span></div><p>اسمت را بنویس و سطح را انتخاب کن. ۱۰ سوال داری و برای هر سوال ۱ دقیقه. به سوال قبلی نمی‌شود برگشت!</p></div><div class="gs"><div class="gt"><span class="gi">📋</span><span>کارنامه</span></div><p>آخر آزمون «کارنامه» را ببین و روی «برایم توضیح بده» بزن تا اشتباهاتت را یاد بگیری.</p></div>
+ </div>
+</section>
+
+<!-- LEARN -->
+<section id="learn" class="scr">
+ <button class="btn back" onclick="show('home')">🏠 خانه</button>
+ 
+ <h1>🛠️ اتاق آموزش</h1>
+ <div class="strip">
+  <div><button class="btn b" onclick="openPick()">واحد کامل را انتخاب کن</button></div>
+  <div><button class="btn b" onclick="show('inp')">کسر یا عدد مخلوط را وارد کن</button></div>
+  <div id="cell">؟</div>
+ </div>
+ <div style="text-align:center"><button class="btn g" onclick="run()">▶ شروع کن</button></div>
+ <div class="wbw"><svg id="wb" viewBox="0 0 1000 470"></svg><div id="sub">اول یک شکل و یک کسر انتخاب کن، بعد «شروع کن» را بزن 😊</div></div>
+ <div style="text-align:center"><button class="btn b" id="rp" style="display:none" onclick="run()">🔄 دوباره تماشا کن</button></div>
+</section>
+
+<section id="pick" class="scr">
+ <h2>یک شکل به عنوان «واحد کامل» انتخاب کن</h2>
+ <div class="grid" id="pg"></div>
+ <div style="text-align:center;margin-top:20px"><button class="btn g" onclick="confirmPick()">انتخاب</button></div>
+</section>
+
+<section id="inp" class="scr">
+ <h2>وارد کردن کسر یا عدد مخلوط</h2>
+ <p class="tip">داخل مربع ها اعداد کسر را بنویس و بعد (تایید) را بزن</p>
+ <div class="sq"><input id="iw" type="number" min="0" max="9" placeholder="عدد مخلوط"><div class="col"><input id="ia" type="number" min="0" max="99" placeholder="صورت"><hr><input id="ib" type="number" min="2" max="12" placeholder="مخرج"></div></div>
+ <p class="tip">💡 فقط کسر می‌خواهی؟ مربع پشتی (سمت چپ) را خالی بگذار یا صفر بنویس.</p>
+ <div style="text-align:center"><button class="btn g" onclick="confirmInp()">تایید</button></div>
+</section>
+
+<!-- QUIZ -->
+<section id="qname" class="scr">
+ <button class="btn back" onclick="show('home')">🏠 خانه</button>
+ <h1>🔑 اتاق آزمون</h1>
+ <div class="card" style="text-align:center">
+  <p style="font-size:19px">اسمت را اینجا بنویس 👇</p>
+  <input id="nm" placeholder="مثلاً: علی یا فاطمه" style="font-size:22px;padding:10px;border:3px solid #1e88e5;border-radius:10px;text-align:center">
+  <p>منظور از «نام» همون اسم خودته. مثلاً اگر اسمت علی است، بنویس: علی</p>
+  <p style="font-size:19px">سطح آزمون را انتخاب کن:</p>
+  <button class="btn g" onclick="startQuiz('آسان')">🟢 آسان</button><button class="btn b" onclick="startQuiz('متوسط')">🟡 متوسط</button><button class="btn" onclick="startQuiz('حرفه‌ای')">🔴 حرفه‌ای</button>
+ </div>
+</section>
+
+<section id="qroom" class="scr">
+ <div class="card" id="qc"><div class="lf r"></div><div class="lf l"></div>
+  <div class="hd"><span id="qn"></span><span id="gt"></span></div>
+  <div class="bar"><div id="qb"></div></div>
+  <div id="qbody"></div>
+  <div style="text-align:center"><button class="btn" id="nx" onclick="nextQ()">سوال بعدی ◀</button></div>
+ </div>
+</section>
+
+<section id="qend" class="scr">
+ <h1 id="qh"></h1><div class="stk" id="sk"></div><h2 id="sc"></h2><p class="tip" id="fb"></p>
+ <div style="text-align:center"><button class="btn g" onclick="report()">📋 دیدن کارنامه</button></div>
+</section>
+
+<section id="rep" class="scr">
+ <button class="btn back" onclick="show('home')">🏠 خانه</button>
+ <div class="card"><h2 id="rn"></h2><h3 id="rl" style="text-align:center"></h3>
+  <h3 style="color:#2e7d32">✅ سوالات درست</h3><div id="rok"></div><button class="btn g" onclick="act('ok')">برایم توضیح بده</button>
+  <h3 style="color:#c62828">❌ سوالات نادرست</h3><div id="rno"></div><button class="btn" onclick="act('no')">برایم توضیح بده</button>
+  <div id="ex" style="display:none"></div></div>
+</section>
+
+<div class="foot">طراح : علیرضا ایزی</div>
+
+<script>
+const $=s=>document.querySelector(s),FA=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]),R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),NS='http://www.w3.org/2000/svg',pick=a=>a[R(0,a.length-1)];
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const sl=ms=>new Promise(r=>setTimeout(r,ms));
+let AC,tok=0;
+function snd(f,d=.15,t='sine'){try{AC=AC||new AudioContext();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+function creak(){snd(180,.3,'sawtooth');setTimeout(()=>snd(140,.3,'sawtooth'),150);setTimeout(()=>snd(520,.15),420)}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2800)}
+function show(id){tok++;document.body.className=id=='home'?'home':'';document.querySelectorAll('.scr').forEach(e=>e.classList.remove('on'));$('#'+id).classList.add('on');window.scrollTo(0,0)}
+function go(el,id){creak();el.classList.add('open');setTimeout(()=>{el.classList.remove('open');show(id)},900)}
+const fr=(a,b)=>`<span class="fr"><i>${FA(a)}</i><i>${FA(b)}</i></span>`,mx=(w,a,b)=>`<span class="mx"><b>${FA(w)}</b>${fr(a,b)}</span>`;
+
+/* ---- shapes ---- */
+const T=['circle','square','rect','tall','wide'];
+const SH={circle:['دایره','مثل چرخ یا بشقاب'],square:['مربع','مثل یک کاشی'],rect:['مستطیل','مثل یک برگه'],tall:['مستطیل عمودی','مثل یک پرچم'],wide:['نوار','مثل یک نوار ریبون'],triangle:['مثلث','مثل یک تکه پنیر 🧀'],hexagon:['شش‌ضلعی','مثل لانه‌ی زنبور 🐝'],pizza:['پیتزا','مثل پیتزای گرد 🍕'],clock:['ساعت دیواری','مثل ساعت اتاق ⏰'],apple:['سیب','مثل یک سیب 🍎'],melon:['هندوانه','مثل یک برش هندوانه 🍉'],choco:['شکلات','مثل شکلات ۱۲ تکه 🍫'],cube:['مکعب','مثل تاس 🎲 (۶ وجه)'],pyramid:['هرم مثلثی','مثل چادر 🔺 (۴ وجه)']};
+const ALL=Object.keys(SH),Is3=t=>t=='cube'||t=='pyramid',L3=[];let ANG=0;
+const ALW={clock:[2,3,4,5,6,10,12],hexagon:[2,3,6],choco:[12],cube:[6],pyramid:[4]};
+const W={circle:110,pizza:110,clock:110,apple:110,hexagon:110,square:110,rect:160,tall:90,wide:170,triangle:120,melon:124,choco:160,cube:120,pyramid:120},HT={tall:160,wide:60,rect:90,choco:120,triangle:100,melon:90,cube:120,pyramid:120};
+const NW=['صفر','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه','ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده','بیست'],ORD=['','','دوم','سوم','چهارم','پنجم','ششم','هفتم','هشتم','نهم','دهم','یازدهم','دوازدهم'];
+function chk(t=S.shape,b=S.b){if(!t||!b)return'';const a=ALW[t];if(a&&!a.includes(b)){if(Is3(t))return`برای ${SH[t][0]} مخرج باید برابر تعداد وجه‌ها یعنی ${FA(a[0])} باشد`;if(t=='clock')return'برای ساعت، مخرج باید ۲، ۳، ۴، ۵، ۶، ۱۰ یا ۱۲ باشد تا دقیقه‌ها درست دربیایند';return`این شکل فقط به ${a.map(FA).join('، ')} قسمت مساوی تقسیم می‌شود`}return''}
+const G3={cube:{V:[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]].map(v=>v.map(x=>x*42)),F:[[0,1,2,3],[4,5,6,7],[0,1,5,4],[3,2,6,7],[0,3,7,4],[1,2,6,5]]},pyramid:{V:[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]].map(v=>v.map(x=>x*38)),F:[[0,1,2],[0,1,3],[0,2,3],[1,2,3]]}};
+function proj(t,an,ex=0){const g=G3[t],cy=Math.cos(an),sy=Math.sin(an),cx=Math.cos(.55),sx=Math.sin(.55);const rot=v=>{const x=v[0]*cy+v[2]*sy,z=-v[0]*sy+v[2]*cy;return[x,v[1]*cx+z*sx,-v[1]*sx+z*cx]};
+ return g.F.map(f=>{const r=f.map(i=>rot(g.V[i])),c=[0,1,2].map(k=>r.reduce((s,p)=>s+p[k],0)/r.length),l=Math.hypot(...c)||1,o=c.map(x=>x/l*ex*22);return{pts:r.map(p=>[p[0]+o[0],p[1]+o[1]]),z:c[2]+o[2],c:[c[0]+o[0],c[1]+o[1]]}})}
+const pd=pts=>'M'+pts.map(q=>q.map(v=>(+v).toFixed(1)).join(' ')).join('L')+'Z';
+const f3svg=(t,an,h=95)=>`<svg viewBox="-90 -90 180 180" width="${h}">`+proj(t,an).sort((a,b)=>a.z-b.z).map(f=>`<path d="${pd(f.pts)}" fill="#fff" stroke="#000" stroke-width="3" stroke-linejoin="round"/>`).join('')+'</svg>';
+function r3(u){const fs=proj(u.t,ANG,u.ex);fs.map((f,i)=>i).sort((a,b)=>fs[a].z-fs[b].z).forEach(i=>{const p=u.pcs[i],f=fs[i];p.e.setAttribute('d',pd(f.pts));p.c[0]=f.c[0];p.c[1]=f.c[1];if(p.t){p.t.setAttribute('x',f.c[0]);p.t.setAttribute('y',f.c[1]+8)}u.g.appendChild(p.g)})}
+setInterval(()=>{ANG+=.04;document.querySelectorAll('[data-r3]').forEach(e=>e.innerHTML=f3svg(e.dataset.r3,ANG,e.dataset.h||95));L3.forEach(r3)},45);
+function sec(n,a0,sp,R,yo){const r=[];for(let i=0;i<n;i++){const a1=a0+sp*i/n,a2=a0+sp*(i+1)/n,f=(a,k=R)=>[+(k*Math.cos(a)).toFixed(1),+(k*Math.sin(a)+yo).toFixed(1)],p1=f(a1),p2=f(a2),m=f((a1+a2)/2,R*.62);
+ r.push({d:n==1&&sp>6?`M0 ${-R}A${R} ${R} 0 1 1 0 ${R}A${R} ${R} 0 1 1 0 ${-R}Z`:`M0 ${yo}L${p1[0]} ${p1[1]}A${R} ${R} 0 ${sp/n>Math.PI?1:0} 1 ${p2[0]} ${p2[1]}Z`,c:n==1?[0,yo*.5]:m})}return r}
+function P(t,n){
+ if(['circle','pizza','clock','apple'].includes(t))return sec(n,-Math.PI/2,2*Math.PI,55,0);
+ if(t=='melon')return sec(n,0,Math.PI,62,-26);
+ if(t=='triangle')return[...Array(n).keys()].map(i=>{const x1=-60+120*i/n,x2=-60+120*(i+1)/n;return{d:`M0 -55L${x1} 45L${x2} 45Z`,c:[(x1+x2)/3,12]}});
+ if(t=='hexagon'){const V=[...Array(7).keys()].map(k=>[55*Math.cos(-Math.PI/2+k*Math.PI/3),55*Math.sin(-Math.PI/2+k*Math.PI/3)]),m=6/n;return[...Array(n).keys()].map(i=>{const pts=[[0,0],...V.slice(i*m,i*m+m+1)];return{d:pd(pts),c:[pts.reduce((s,p)=>s+p[0],0)/pts.length,pts.reduce((s,p)=>s+p[1],0)/pts.length]}})}
+ if(t=='choco')return n==1?[{d:'M-80 -60h160v120h-160Z',c:[0,0]}]:[...Array(n).keys()].map(i=>{const x=-80+40*(i%4),y=-60+40*Math.floor(i/4);return{d:`M${x} ${y}h40v40h-40Z`,c:[x+20,y+20]}});
+ const[w,h]=D[t],r=[];for(let i=0;i<n;i++){if(t=='tall'){const s=h/n,y=-h/2+i*s;r.push({d:`M${-w/2} ${y}h${w}v${s}h${-w}Z`,c:[0,y+s/2]})}else{const s=w/n,x=-w/2+i*s;r.push({d:`M${x} ${-h/2}h${s}v${h}h${-s}Z`,c:[x+s/2,0]})}}return r}
+const D={square:[110,110],rect:[160,90],tall:[90,160],wide:[170,60]};
+const dc={pizza:(c,n)=>`<circle cx="${c[0]}" cy="${c[1]}" r="${n>8?4:7}" fill="#888"/>`,melon:c=>`<ellipse cx="${c[0]}" cy="${c[1]}" rx="3" ry="5" fill="#444"/>`};
+const OV={clock:`<g stroke="#000" stroke-width="3">${[...Array(12).keys()].map(k=>{const a=k*Math.PI/6;return`<line x1="${44*Math.sin(a)}" y1="${-44*Math.cos(a)}" x2="${52*Math.sin(a)}" y2="${-52*Math.cos(a)}"/>`}).join('')}</g><line x1="0" y1="0" x2="0" y2="-36" stroke="#000" stroke-width="3" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/></line><line x1="0" y1="0" x2="0" y2="-24" stroke="#d00" stroke-width="5" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="48s" repeatCount="indefinite"/></line><circle r="4"/>`,apple:`<path d="M0 -52Q4 -68 12 -72" stroke="#444" stroke-width="4" fill="none"/><path d="M6 -62Q22 -76 30 -62Q16 -52 6 -62Z" fill="#999" stroke="#444" stroke-width="2"/>`};
+function qsvg(t,n,ks,H=110){if(Is3(t))return`<span data-r3="${t}" data-h="${H}"></span>`;const g=ks.map((k,i)=>`<g transform="translate(${95+190*i},90)">${P(t,n).map((p,j)=>`<path d="${p.d}" fill="${j<k?'#ffb300':'#fff'}" stroke="#222" stroke-width="3"/>`).join('')}</g>`).join('');return `<svg viewBox="0 0 ${190*ks.length} 180" height="${H}" style="max-width:100%">${g}</svg>`}
+
+/* ---- learn room ---- */
+const S={shape:null,w:0,a:0,b:0};let ps=null;
+function openPick(){$('#pg').innerHTML=ALL.map(t=>{const pv=Is3(t)?`<span data-r3="${t}"></span>`:`<svg viewBox="-90 -90 180 180" width="95"><path d="${P(t,1)[0].d}" fill="#fff" stroke="#000" stroke-width="4"/>${t=='pizza'?'<circle cx="-18" cy="-12" r="8" fill="#888"/><circle cx="16" cy="-20" r="8" fill="#888"/><circle cx="0" cy="22" r="8" fill="#888"/>':''}${t=='melon'?'<ellipse cx="-20" cy="10" rx="4" ry="6" fill="#444"/><ellipse cx="18" cy="10" rx="4" ry="6" fill="#444"/>':''}${OV[t]||''}</svg>`;return`<div class="sp" data-t="${t}" onclick="selP(this)">${pv}<small><b>${SH[t][0]}</b><br>${SH[t][1]}</small></div>`}).join('');ps=null;show('pick')}
+function selP(e){document.querySelectorAll('.sp').forEach(x=>x.classList.remove('sel'));e.classList.add('sel');ps=e.dataset.t;snd(600)}
+function confirmPick(){if(!ps)return toast('اول یک شکل را انتخاب کن 🙂');S.shape=ps;const er=chk();if(er){toast(er+' — کسر را دوباره وارد کن');S.b=0;S.a=0;S.w=0}cell();show('learn')}
+function confirmInp(){const w=+$('#iw').value||0,a=+$('#ia').value||0,b=+$('#ib').value||0;
+ if(b<2)return toast('مخرج باید ۲ یا بیشتر باشد');if(a<1)return toast('صورت کسر را بنویس');if(b>12)return toast('مخرج را ۱۲ یا کمتر بنویس');
+ const er=chk(S.shape,b);if(er)return toast(er);S.w=w;S.a=a;S.b=b;cell();show('learn')}
+function cell(){let h='';if(S.shape)h+=qsvg(S.shape,1,[0],100);if(S.b)h+=`<div style="font-size:24px">${S.w>0?mx(S.w,S.a,S.b):fr(S.a,S.b)}</div>`;$('#cell').innerHTML=h||'؟'}
+const sub=h=>$('#sub').innerHTML=h,S_=n=>`<b class="stp">مرحله ${FA(n)}:</b> `,say=async(h,x=0)=>{sub(h);await sl(Math.max(2600,$('#sub').textContent.length*70)+x)};
+function scr(d=.6){try{AC=AC||new AudioContext();const n=AC.sampleRate*d,b=AC.createBuffer(1,n,AC.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(1-i/n)*.5;const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();f.type='bandpass';f.frequency.value=2500;g.gain.value=.25;s.buffer=b;s.connect(f);f.connect(g);g.connect(AC.destination);s.start()}catch(e){}}
+const whoosh=()=>{for(let i=0;i<6;i++)setTimeout(()=>snd(300+i*120,.12,'triangle'),i*50)};
+function mk(B,hand,t,n,x,y,sc){const g=document.createElementNS(NS,'g');g.style.transform=`translate(${x}px,${y}px) scale(${sc})`;g.style.transition='transform .9s';const ps=P(t,n),d3=Is3(t);
+ g.innerHTML=(d3?'':`<path class="o" d="${P(t,1)[0].d}" fill="#fff" stroke="#222" stroke-width="3"/>`)+ps.map(p=>`<g class="pc" style="opacity:${d3?1:0};transition:opacity .4s"><path d="${p.d}" fill="${d3?'#fff':'none'}" stroke="#222" stroke-width="3" stroke-linejoin="round" style="transition:fill .4s"/>${!d3&&dc[t]?dc[t](p.c,n):''}</g>`).join('')+(OV[t]&&!d3?`<g class="ov" style="transition:opacity .4s">${OV[t]}</g>`:'');
+ B.insertBefore(g,hand);const u={g,t,n,d3,sc,x,y,ex:0,o:g.querySelector('.o'),ov:g.querySelector('.ov'),pcs:[...g.querySelectorAll('.pc')].map((q,i)=>{const c=[...ps[i].c],l=Math.hypot(...c)||1;return{g:q,e:q.firstChild,c,dir:[c[0]/l,c[1]/l],t:null}})};
+ if(d3){L3.push(u);r3(u)}return u}
+const cp=(u,p)=>[u.x+p.c[0]*u.sc,u.y+p.c[1]*u.sc];
+function lab(u,i,txt){const p=u.pcs[i],t=document.createElementNS(NS,'text');t.textContent=txt;t.setAttribute('x',p.c[0]);t.setAttribute('y',p.c[1]+8);t.setAttribute('text-anchor','middle');t.setAttribute('font-size',26);t.setAttribute('font-weight','bold');t.setAttribute('fill','#d500f9');t.setAttribute('stroke','#fff');t.setAttribute('stroke-width','.8');t.style.paintOrder='stroke';t.setAttribute('class','svp');p.g.appendChild(t);p.t=t}
+function setEx(u,v){u.ex=v;if(!u.d3)u.pcs.forEach(p=>p.g.style.transform=`translate(${p.dir[0]*v*30}px,${p.dir[1]*v*30}px)`)}
+async function tw(u,a,b,ms,st){const n=Math.ceil(ms/30);for(let i=1;i<=n;i++){if(st())return;setEx(u,a+(b-a)*i/n);await sl(30)}}
+function tx(B,hand,x,y,s,sz,fill){const t=document.createElementNS(NS,'text');t.textContent=s;t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('text-anchor','middle');t.setAttribute('font-size',sz);t.setAttribute('font-weight','bold');t.setAttribute('fill',fill);t.setAttribute('class','svp');B.insertBefore(t,hand)}
+function fx(B,hand,x,y,a,b,sz,fill){const g=document.createElementNS(NS,'g');g.setAttribute('class','svp');g.innerHTML=`<text x="${x}" y="${y-8}" text-anchor="middle" font-size="${sz}" font-weight="bold" fill="${fill}">${FA(a)}</text><line x1="${x-sz*.7}" x2="${x+sz*.7}" y1="${y}" y2="${y}" stroke="${fill}" stroke-width="4"/><text x="${x}" y="${y+sz}" text-anchor="middle" font-size="${sz}" font-weight="bold" fill="${fill}">${FA(b)}</text>`;B.insertBefore(g,hand)}
+async function run(){
+ const my=++tok,st=()=>my!=tok,{shape:t,w,a,b}=S;
+ if(!t)return toast('اول «واحد کامل را انتخاب کن»');if(!b)return toast('اول کسر یا عدد مخلوط را وارد کن');
+ const er=chk();if(er)return toast(er);const mixed=w>0;if(mixed&&a>=b)return toast('در عدد مخلوط، صورت باید از مخرج کوچکتر باشد');
+ const cnt=mixed?w+1:Math.ceil(a/b);if(cnt>4)return toast('عدد خیلی بزرگ است؛ حداکثر ۴ شکل می‌کشیم');
+ L3.length=0;$('#rp').style.display='none';const B=$('#wb');B.innerHTML='';
+ const hand=document.createElementNS(NS,'text');hand.textContent='✍️';hand.setAttribute('font-size','44');hand.style.transition='transform .7s';hand.style.transform='translate(145px,420px)';B.appendChild(hand);
+ const hm=(x,y)=>hand.style.transform=`translate(${x}px,${y}px)`,sp=700/cnt,SC=Math.min(1.4,(sp-34)/W[t]),cy=180,sx=j=>300+sp*(j+.5),ux=145,hh=(HT[t]||110)/2*SC,by=cy+hh+16;
+ const u=mk(B,hand,t,b,-220,cy,SC);u.g.getBoundingClientRect();u.g.style.transform=`translate(${ux}px,${cy}px) scale(${SC})`;u.x=ux;await sl(1100);if(st())return;
+ await say(`${S_(1)} این شکل، <b class="pl">واحد کامل</b> ماست. (${SH[t][0]}، ${SH[t][1]})${t=='clock'?' یک ساعت کامل = ۶۰ دقیقه است.':''}`);if(st())return;
+ await say(`${S_(2)} چون مخرج کسر <b class="pl">${FA(b)}</b> است، شکل را به <b>${FA(b)}</b> قسمت مساوی تقسیم می‌کنیم.${t=='clock'?` هر قسمت <b>${FA(60/b)}</b> دقیقه است.`:''} ${u.d3?`این شکل ${FA(b)} وجه مساوی دارد؛ ببین چرخش آن را!`:'ماژیک را ببین!'}`);if(st())return;
+ for(const p of u.pcs){const c=cp(u,p);hm(c[0],c[1]);await sl(750);if(st())return;scr(.7);if(u.d3){p.e.setAttribute('fill','#e1f5fe');setTimeout(()=>p.e.setAttribute('fill','#fff'),600)}else p.g.style.opacity=1;await sl(b>8?500:900);if(st())return}
+ await say(`${S_(3)} حالا قسمت‌ها را یکی‌یکی می‌شماریم تا مطمئن شویم <b>${FA(b)}</b> قسمت مساوی است.`);if(st())return;
+ for(let i=0;i<b;i++){lab(u,i,FA(i+1));snd(500+i*60,.25);sub(`قسمت شماره‌ی <b class="te">${FA(i+1)}</b>`);await sl(1000);if(st())return}
+ await say(`شمردیم: <b class="pl">${FA(b)}</b> قسمت مساوی ✔️`);if(st())return;
+ if(b<=8||u.d3){await say(`${S_(4)} قسمت‌ها را از هم جدا می‌کنیم تا مساوی بودنشان را ببینیم 👀`,-800);if(u.o)u.o.style.opacity=0;if(u.ov)u.ov.style.opacity=0;whoosh();await tw(u,0,1,1200,st);await sl(2500);if(st())return;whoosh();await tw(u,1,0,1200,st);if(st())return}
+ u.pcs.forEach(p=>{if(p.t){p.t.remove();p.t=null}});if(u.ov)u.ov.style.opacity=1;
+ const ln=document.createElementNS(NS,'line');[['x1',285],['x2',285],['y1',20],['y2',320],['stroke','#e53935'],['stroke-width',5],['stroke-dasharray','8 6']].forEach(([k,v])=>ln.setAttribute(k,v));B.insertBefore(ln,hand);
+ await say(`${S_(5)} این شکل <b>واحد کامل</b> است؛ بقیه‌ی شکل‌ها را باید از روی آن بسازیم. حالا نوبت ساخت <b class="pl">${mixed?'عدد مخلوط':'کسر'}</b> ${mixed?mx(w,a,b):fr(a,b)} است. یک خط عمودی می‌کشیم و شکل‌ها را آن طرفش می‌سازیم.`);if(st())return;
+ await say(mixed?`${S_(6)} اول <b>واحدهای کامل</b> را بررسی می‌کنیم. عدد صحیح ${FA(w)} است، پس <b class="pl">${FA(w)}</b> شکل کامل می‌کشیم و همه‌اش را رنگ می‌زنیم.`:`${S_(6)} چون این یک <b>کسر</b> است، واحد کامل جدا نمی‌کشیم؛ فقط به اندازه‌ی صورت، یعنی <b class="pl">${FA(a)}</b> قسمت رنگ می‌کنیم${cnt>1?`. چون ${FA(a)} از ${FA(b)} بیشتر است، <b>${FA(cnt)}</b> شکل لازم داریم`:''}.`);if(st())return;
+ const all=[];for(let j=0;j<cnt;j++){const s=mk(B,hand,t,b,sx(j),cy,SC);s.g.getBoundingClientRect();all.push(s);hm(sx(j),cy+hh);await sl(800);if(st())return;scr(.5);s.pcs.forEach(p=>p.g.style.opacity=1);await sl(900)}
+ const col=p=>p.e.setAttribute('fill','#ffb300');
+ if(mixed){for(let j=0;j<w;j++){all[j].pcs.forEach(col);hm(sx(j),cy+hh);snd(660,.2);await sl(1100);if(st())return}
+  await say(`بعد قسمت کسری را می‌کشیم: شکل را مثل واحد کامل به <b>${FA(b)}</b> قسمت می‌کنیم و <b class="pl">${FA(a)}</b> قسمت از آن را رنگ می‌زنیم.`);if(st())return;
+  for(let i=0;i<a;i++){const c=cp(all[w],all[w].pcs[i]);hm(c[0],c[1]);await sl(800);if(st())return;col(all[w].pcs[i]);snd(600+i*40,.15);sub(`رنگ زدن قسمت <b class="te">${FA(i+1)}</b> از ${FA(a)}`);await sl(900)}}
+ else for(let i=0;i<a;i++){const s=all[Math.floor(i/b)],p=s.pcs[i%b],c=cp(s,p);hm(c[0],c[1]);await sl(800);if(st())return;col(p);snd(600+i*40,.15);sub(`رنگ زدن قسمت شماره‌ی <b class="te">${FA(i+1)}</b> از ${FA(a)}`);await sl(900)}
+ if(mixed){await say(`${S_(7)} حالا واحدهای کامل را در یک دسته می‌گذاریم و جدا از قسمت کسری می‌نویسیم.`);if(st())return;
+  const hw=W[t]*SC/2,x1=sx(0)-hw,x2=sx(w-1)+hw,xm=(x1+x2)/2,br=document.createElementNS(NS,'path');br.setAttribute('d',`M${x1} ${by}q0 12 12 12H${xm-12}q12 0 12 12q0-12 12-12H${x2-12}q12 0 12-12`);br.setAttribute('fill','none');br.setAttribute('stroke','#e53935');br.setAttribute('stroke-width',4);B.insertBefore(br,hand);snd(450,.3);
+  tx(B,hand,xm,by+64,`${NW[w]} واحد کامل`,30,'#1565c0');tx(B,hand,xm,by+114,FA(w),44,'#1565c0');
+  await say(`این ${FA(w)} شکل کامل، <b class="pl">${NW[w]} واحد کامل</b> هستند و با عدد می‌نویسیم <b class="pl">${FA(w)}</b>.`);if(st())return;
+  tx(B,hand,sx(w),by+64,`${NW[a]} ${ORD[b]}`,30,'#2e7d32');fx(B,hand,sx(w),by+100,a,b,34,'#2e7d32');snd(550,.3);
+  await say(`این شکل هم <b>قسمت کسری</b> است: <b class="pl">${NW[a]} ${ORD[b]}</b> که با عدد می‌نویسیم ${fr(a,b)}. دقت کن واحد کامل و قسمت کسری جدا هستند!`);if(st())return}
+ hm(145,430);const tot=(mixed?w*60:0)+a*60/b,h=Math.floor(tot/60),m=tot%60;
+ await say(`🎉 آفرین! ${mixed?`عدد مخلوط ${mx(w,a,b)} یعنی <b>${FA(w)}</b> شکل کامل و <b>${FA(a)}</b> قسمت از <b>${FA(b)}</b> قسمت یک شکل دیگر.`:`کسر ${fr(a,b)} یعنی <b>${FA(a)}</b> قسمت از <b>${FA(b)}</b> قسمت مساوی رنگ شد.${a>b?' چون صورت از مخرج بزرگتر است، از یک واحد کامل بیشتر است.':''}`}${t=='clock'?` ⏰ یعنی ${h?FA(h)+' ساعت و ':''}${FA(m)} دقیقه.`:''}`);
+ snd(800,.3);if(!st())$('#rp').style.display='inline-block'}
+
+/* ---- quiz generators ---- */
+function opts(c,wr,ex){let a=[c];wr.forEach(w=>{if(!a.includes(w))a.push(w)});while(a.length<4){const w=ex();if(!a.includes(w))a.push(w)}a=sh(a.slice(0,4));return{o:a,a:a.indexOf(c)}}
+const rf=()=>fr(R(1,5),R(6,9));
+const G={
+easy:[()=>{const t=pick(T),n=R(3,8),k=R(1,n-1);return{q:'کسر قسمت رنگی شکل را انتخاب کن',img:qsvg(t,n,[k]),...opts(fr(k,n),[fr(n,k),fr(n-k,n),fr(k,n+1)],rf),ex:`شکل <b>${FA(n)}</b> قسمت مساوی دارد (مخرج) و <b>${FA(k)}</b> قسمت رنگی است (صورت). پس کسر ${fr(k,n)} است.`,trap:'اگر جای صورت و مخرج را عوض کنی یا قسمت‌های بی‌رنگ را بشماری، اشتباه می‌شود. راهکار: اول کل قسمت‌ها را (مخرج) بشمار، بعد رنگی‌ها را (صورت).'}},
+()=>{const t=pick(T),n=R(3,8),k=R(1,n-1);return{q:'این شکل به چند قسمت مساوی تقسیم شده است؟',img:qsvg(t,n,[k]),...opts(FA(n),[FA(k),FA(n+1),FA(n-1)],()=>FA(R(2,9))),ex:`همه‌ی قسمت‌ها (رنگی و بی‌رنگ) را یکی یکی می‌شماریم: <b>${FA(n)}</b> قسمت.`,trap:'اگر فقط قسمت‌های رنگی را بشماری، اشتباه است. راهکار: کل تکه‌ها را بشمار.'}},
+()=>{const a=R(1,4),b=R(5,9);return{q:`در کسر ${fr(a,b)} ، به عدد ${FA(b)} (پایین کسر) چه می‌گویند؟`,img:'',...opts('مخرج',['صورت','عدد مخلوط','واحد کامل'],()=>'کسر'),ex:`عدد پایین کسر <b>مخرج</b> و عدد بالا <b>صورت</b> نام دارد. مخرج می‌گوید شکل به چند قسمت مساوی تقسیم شده.`,trap:'صورت و مخرج را با هم قاطی نکن. راهکار: «مخرج» پایین است، «صورت» بالا.'}},
+()=>({q:'جای خالی را پر کن: مخرج کسر نشان می‌دهد واحد کامل به چند ........ تقسیم شده است.',img:'',...opts('قسمت مساوی',['قسمت رنگی','عدد مخلوط','واحد کامل'],()=>'کسر'),ex:'مخرج یعنی تعداد قسمت‌های مساوی واحد کامل.',trap:'قسمت رنگی را صورت نشان می‌دهد نه مخرج.'})],
+mid:[()=>{const t=pick(T),w=R(1,3),n=R(3,6),k=R(1,n-1);return{q:'عدد مخلوط شکل‌ها را انتخاب کن',img:qsvg(t,n,Array(w).fill(n).concat([k]),95),...opts(mx(w,k,n),[fr(w*n+k,n),mx(k,w,n),mx(w,n,k)],()=>mx(R(1,3),R(1,3),R(4,7))),ex:`شکل‌های کاملاً رنگی را می‌شماریم: <b>${FA(w)}</b> واحد کامل. شکل آخر ${FA(n)} قسمت دارد و ${FA(k)} قسمتش رنگی است. پس ${mx(w,k,n)}.`,trap:'اگر همه‌ی تکه‌ها را با هم بشماری کسر نامتجانس می‌شود، نه عدد مخلوط. راهکار: واحدهای کامل را جدا بشمار.'}},
+()=>{const w=R(1,4),b=R(3,8),a=R(1,b-1);return{q:'کدام گزینه یک عدد مخلوط است؟',img:'',...opts(mx(w,a,b),[fr(a,b),fr(b+a,b),fr(a,b+1)],rf),ex:`عدد مخلوط یک <b>عدد صحیح</b> کنار یک <b>کسر</b> دارد: ${mx(w,a,b)}.`,trap:'کسرِ تنها، عدد مخلوط نیست حتی اگر صورتش بزرگ باشد.'}},
+()=>{const w=R(2,5),b=R(3,8),a=R(1,b-1);return{q:`در عدد مخلوط ${mx(w,a,b)} ، عدد ${FA(w)} چه چیزی را نشان می‌دهد؟`,img:'',...opts('تعداد واحدهای کامل',['صورت کسر','مخرج کسر','تعداد قسمت‌های بی‌رنگ'],()=>'تعداد شکل‌ها'),ex:`عدد صحیح در عدد مخلوط می‌گوید چند <b>واحد کامل</b> کشیده می‌شود.`,trap:'صورت و مخرج مربوط به قسمت کسری هستند.'}},
+()=>{const b=R(3,9),a=R(1,b-1);return{q:`برای نشان دادن کسر ${fr(a,b)} ، شکل را به چند قسمت مساوی تقسیم و چند قسمت را رنگ می‌کنیم؟`,img:'',...opts(`${FA(b)} قسمت مساوی، ${FA(a)} رنگی`,[`${FA(a)} قسمت مساوی، ${FA(b)} رنگی`,`${FA(b)} قسمت مساوی، ${FA(b-a)} رنگی`,`${FA(a+b)} قسمت مساوی، ${FA(a)} رنگی`],()=>'۲ قسمت مساوی، ۱ رنگی'),ex:`مخرج ${FA(b)} است: شکل ${FA(b)} قسمت می‌شود. صورت ${FA(a)} است: ${FA(a)} قسمت رنگ می‌شود.`,trap:'جای صورت و مخرج را عوض نکن؛ تقسیم با مخرج، رنگ با صورت.'}}],
+hard:[()=>{const b=R(2,6),w=R(1,4),r=R(1,b-1),n=w*b+r;return{q:`کسر ${fr(n,b)} را به عدد مخلوط تبدیل کن`,img:'',...opts(mx(w,r,b),[mx(w+1,r,b),mx(r,w,b),mx(w,b-r,b)],()=>mx(R(1,4),R(1,3),R(4,7))),ex:`${FA(n)} را بر ${FA(b)} تقسیم می‌کنیم: خارج قسمت <b>${FA(w)}</b> (واحد کامل) و باقیمانده <b>${FA(r)}</b> (صورت). مخرج همان ${FA(b)} می‌ماند: ${mx(w,r,b)}.`,trap:'باقیمانده صورت کسر می‌شود و مخرج عوض نمی‌شود. راهکار: تقسیم کن و جای خارج‌قسمت و باقیمانده را درست بنویس.'}},
+()=>{const b=R(2,6),w=R(1,4),r=R(1,b-1);return{q:`عدد مخلوط ${mx(w,r,b)} معادل کدام کسر است؟`,img:'',...opts(fr(w*b+r,b),[fr(w+r,b),fr(w*r+b,b),fr(w*b,b)],rf),ex:`هر واحد کامل ${FA(b)} قسمت است: ${FA(w)}×${FA(b)}=${FA(w*b)} ، بعد ${FA(r)} قسمت اضافه: ${FA(w*b+r)}. پس ${fr(w*b+r,b)}.`,trap:'فقط جمع کردن عدد صحیح و صورت کافی نیست. راهکار: اول ضرب در مخرج، بعد جمع با صورت.'}},
+()=>{const t=pick(T),b=R(3,5),k=R(b+1,2*b-1);return{q:'کسر قسمت‌های رنگی شکل‌ها را بنویس',img:qsvg(t,b,[b,k-b]),...opts(fr(k,b),[fr(k-b,b),fr(b,k),fr(k,2*b)],rf),ex:`هر شکل ${FA(b)} قسمت دارد (مخرج). رنگی‌ها: ${FA(b)} + ${FA(k-b)} = <b>${FA(k)}</b> (صورت). کسر ${fr(k,b)} است که بزرگتر از یک واحد کامل است.`,trap:'مخرج را کل تکه‌های همه‌ی شکل‌ها نگیر؛ مخرج فقط تعداد قسمت‌های یک واحد کامل است.'}},
+()=>{const b=R(3,7),a=b+R(1,3);return{q:'کدام کسر از یک واحد کامل بزرگتر است؟',img:'',...opts(fr(a,b),[fr(R(1,b-1),b),fr(b-1,b),fr(1,b)],()=>fr(R(1,2),R(5,9))),ex:`کسری از یک واحد کامل بزرگتر است که صورتش از مخرجش بزرگتر باشد: ${fr(a,b)}.`,trap:'عدد بزرگتر بودن مخرج نشانه‌ی بزرگی کسر نیست. راهکار: صورت و مخرج را مقایسه کن.'}},
+()=>{const ok=['در عدد مخلوط، صورت کسر همیشه از مخرج کوچکتر است.','هر عدد مخلوط یک عدد صحیح و یک کسر دارد.'],no=[`در کسر ${fr(3,4)} ، عدد ۴ صورت است.`,'عدد مخلوط فقط واحد کامل دارد و کسر ندارد.',`کسر ${fr(7,4)} از یک واحد کامل کوچکتر است.`,`برای کسر ${fr(3,5)} شکل را به ۳ قسمت مساوی تقسیم می‌کنیم.`];const c=pick(ok);return{q:'کدام جمله درست است؟',img:'',...opts(c,sh(no).slice(0,3),()=>'-'),ex:`درست: «${c}» چون قسمت کسری عدد مخلوط همیشه کمتر از یک واحد کامل است.`,trap:'جمله‌ها را با شکل بررسی کن: مخرج تعداد قسمت‌های مساوی، صورت تعداد قسمت‌های رنگی.'}}]};
+let Q={};
+function startQuiz(lv){const nm=$('#nm').value.trim();if(!nm)return toast('اول اسمت را بنویس! مثلاً: علی');creak();
+ const g=G[{'آسان':'easy','متوسط':'mid','حرفه‌ای':'hard'}[lv]];const qs=[];let last=-1;while(qs.length<10){let i=R(0,g.length-1);if(i==last&&g.length>1)continue;last=i;qs.push(g[i]())}
+ Q={nm,lv,qs,i:0,ans:Array(10).fill(-1),end:Date.now()+660000,qe:Date.now()+60000};show('qroom');drawQ();clearInterval(Q.iv);Q.iv=setInterval(tick,250)}
+function drawQ(){const q=Q.qs[Q.i];$('#qn').textContent=`سوال ${FA(Q.i+1)} از ${FA(10)} — ${Q.lv}`;
+ $('#qbody').innerHTML=`<h3>${FA(Q.i+1)}) ${q.q}</h3><div style="text-align:center">${q.img}</div>`+q.o.map((o,j)=>`<button class="op" onclick="choose(${j},this)">${o}</button>`).join('');$('#nx').textContent=Q.i==9?'پایان آزمون ✔':'سوال بعدی ◀'}
+function choose(j,e){Q.ans[Q.i]=j;document.querySelectorAll('.op').forEach(x=>x.classList.remove('sel'));e.classList.add('sel');snd(500)}
+function tick(){const now=Date.now(),rem=Math.max(0,Q.end-now),qr=Math.max(0,Q.qe-now);$('#qb').style.width=(qr/600)+'%';
+ const m=Math.floor(rem/60000),s=Math.floor(rem/1000)%60;$('#gt').innerHTML=`⏱ ${FA(m)}:${FA(String(s).padStart(2,'0'))}`;$('#gt').className=rem<=60000?'warn':'';if(rem<=60000&&s%2==0)snd(900,.05);
+ if(rem<=0)return finish();if(qr<=0)nextQ()}
+function nextQ(){if(Q.busy)return;if(Q.i==9)return finish();Q.busy=1;const c=$('#qc');c.classList.add('cl');creak();setTimeout(()=>{Q.i++;Q.qe=Date.now()+60000;drawQ();c.classList.remove('cl');Q.busy=0},700)}
+function finish(){clearInterval(Q.iv);Q.sc=Q.qs.filter((q,i)=>Q.ans[i]==q.a).length;const s=Q.sc;
+ $('#qh').textContent=`🎊 آزمون تمام شد، ${Q.nm}!`;const an=Q.ans.filter(x=>x>=0).length;$('#sk').textContent=an==0?'🌤️':s>=9?'🏆':s>=7?'👏':s>=5?'🙂':'🌱';$('#sc').textContent=`امتیاز تو: ${FA(s)} از ${FA(10)}`;
+ $('#fb').textContent=an==0?'به هیچ سوالی جواب ندادی. اشکالی ندارد؛ اول از اتاق آموزش شروع کن و بعد دوباره امتحان کن.':s>=9?'عالی بود! تقریباً همه‌ی سوال‌ها را درست جواب دادی.':s>=7?'خیلی خوب بود! با کمی تمرین بیشتر به امتیاز کامل می‌رسی.':s>=5?'نتیجه‌ی قابل قبولی است. سوال‌های اشتباه را در کارنامه ببین و مرور کن.':'این بار کمتر درست شد، ولی هر آزمون یک تمرین است. به اتاق آموزش برو و دوباره امتحان کن.';show('qend');snd(800,.4)}
+function report(){$('#rn').textContent='👤 '+Q.nm;$('#rl').textContent='سطح آزمون: '+Q.lv;$('#ex').style.display='none';
+ const ok=[],no=[];Q.qs.forEach((q,i)=>(Q.ans[i]==q.a?ok:no).push(i));
+ const f=(l,c)=>l.length?l.map(i=>`<span class="num ${c}" onclick="why(${i})">${FA(i+1)}</span>`).join(''):'<i>—</i>';$('#rok').innerHTML=f(ok,'ok');$('#rno').innerHTML=f(no,'no');show('rep')}
+function act(w){document.querySelectorAll('#r'+w+' .num').forEach(e=>e.classList.add('act'))}
+function why(i){const e=event.target;if(!e.classList.contains('act'))return toast('اول «برایم توضیح بده» را بزن');const q=Q.qs[i],ok=Q.ans[i]==q.a,x=$('#ex');x.style.display='block';
+ x.innerHTML=`<b>سوال ${FA(i+1)}:</b> ${q.q}<br>${q.img}<br>${ok?'✅ جوابت درست بود!':`❌ جواب تو: ${Q.ans[i]<0?'بی‌پاسخ':q.o[Q.ans[i]]}`}<br>✔️ پاسخ درست: ${q.o[q.a]}<br><b>توضیح:</b> ${q.ex}${ok?'':`<br>⚠️ <b>تله‌ی تستی:</b> ${q.trap}`}`}
+</script>
+</body>
+</html>
